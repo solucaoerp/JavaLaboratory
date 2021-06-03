@@ -1,6 +1,6 @@
 /* Engine de Conexão ao Banco de Dados MySQL */
 
-package com.crud.ibrplanner.data;
+package com.crud.ibrplanner.dal;
 
 import javax.sql.DataSource;
 
@@ -14,7 +14,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 @Configuration
 public class DataConfigurationMySQL {
 
-	/* Bin de Conexão com o Banco de Dados MySQL */
+	// Bin de Conexão com o Banco de Dados MySQL
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -25,15 +25,15 @@ public class DataConfigurationMySQL {
 		return dataSource;
 	}
 	
-	/* Bin de Conexão com o Hibernate */
+	// Bin de Conexão com o Hibernate
 	@Bean
 	public JpaVendorAdapter jpaVendorAdapter() {
 		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
-		adapter.setDatabase(Database.MYSQL);                               /* definição do Banco de Dados utilizado                                       */ 
-		adapter.setShowSql(true); 										   /* exibe etapas dos scripts no Banco de Dados [log - passo a passo no console] */
-		adapter.setGenerateDdl(true); 									   /* permite a criação das tabelas de forma automática no Banco de Dados         */
-		adapter.setDatabasePlatform("org.hibernate.dialect.MySQLDialect"); /* dialeto                                                                     */
-		adapter.setPrepareConnection(true); 							   /* para que o Hibernate prepare a Conexão                                      */
+		adapter.setDatabase(Database.MYSQL);                                 // definição do Banco de Dados utilizado 
+		adapter.setShowSql(true); 										     // exibe etapas dos scripts no Banco de Dados [log - passo a passo no console]
+		adapter.setGenerateDdl(true); 									     // permite a criação das tabelas de forma automática no Banco de Dados
+		adapter.setDatabasePlatform("org.hibernate.dialect.MySQLDialect");   // dialeto
+		adapter.setPrepareConnection(true); 							     // para que o Hibernate prepare a Conexão
 		
 		return adapter;
 	}	

@@ -1,4 +1,4 @@
-package com.crud.ibrplanner.models;
+package com.crud.ibrplanner.entities;
 
 import java.io.Serializable;
 
