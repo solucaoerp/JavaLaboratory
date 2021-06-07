@@ -1,8 +1,19 @@
+import NavBar from "components/NavBar";
+import Footer from "components/Footer";
+import DataTable from "components/DataTable";
+
 function App() {
   return (
-    <div>
-      <h1 className="text-primary">Aplicativo Web React [App.tsx]</h1>
-    </div>
+    <>
+
+      <NavBar />
+      <div className="container">
+        <h1 className="text-primary">Ponto de Chamada dos Componentes [App.tsx]</h1>
+        <DataTable />
+      </div>
+      <Footer />
+
+    </>
   );
 }
 
