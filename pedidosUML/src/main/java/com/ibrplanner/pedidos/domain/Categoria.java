@@ -1,24 +1,25 @@
-package com.ibrplanner.pedidos.entities;
+package com.ibrplanner.pedidos.domain;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "categoria")
-public class CategoriaModel implements Serializable {
+public class Categoria implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
 
-    public CategoriaModel() {
+    public Categoria() {
     }
 
-    public CategoriaModel(Long id, String nome) {
+    public Categoria(Long id, String nome) {
         this.id = id;
         this.nome = nome;
     }
@@ -44,7 +45,7 @@ public class CategoriaModel implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CategoriaModel that = (CategoriaModel) o;
+        Categoria that = (Categoria) o;
 
         if (!Objects.equals(id, that.id)) return false;
         return Objects.equals(nome, that.nome);
