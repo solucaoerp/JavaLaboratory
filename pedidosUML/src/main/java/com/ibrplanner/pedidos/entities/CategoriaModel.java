@@ -2,6 +2,7 @@ package com.ibrplanner.pedidos.entities;
 
 import jakarta.persistence.*;
 
+
 import java.io.Serializable;
 import java.util.Objects;
 
