@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "categoria")
+@RequestMapping(value = "/categorias")
 public class CategoriaController {
     @Autowired
     CategoriaService service;
@@ -20,4 +20,5 @@ public class CategoriaController {
         Categoria obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
+
 }
