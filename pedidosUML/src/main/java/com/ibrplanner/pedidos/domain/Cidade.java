@@ -1,9 +1,6 @@
 package com.ibrplanner.pedidos.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -15,14 +12,18 @@ public class Cidade implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    @ManyToOne
+    @JoinColumn(name = "estado_id")
     private Estado estado;
 
     public Cidade() {
     }
 
-    public Cidade(Long id, String nome) {
+    public Cidade(Long id, String nome, Estado estado) {
+        super();
         this.id = id;
         this.nome = nome;
+        this.estado = estado;
     }
 
     public Long getId() {
