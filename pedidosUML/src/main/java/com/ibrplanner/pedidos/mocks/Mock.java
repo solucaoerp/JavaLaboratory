@@ -1,13 +1,8 @@
 package com.ibrplanner.pedidos.mocks;
 
-import com.ibrplanner.pedidos.domain.Categoria;
-import com.ibrplanner.pedidos.domain.Cidade;
-import com.ibrplanner.pedidos.domain.Estado;
-import com.ibrplanner.pedidos.domain.Produto;
-import com.ibrplanner.pedidos.repositories.CategoriaRepository;
-import com.ibrplanner.pedidos.repositories.CidadeRepository;
-import com.ibrplanner.pedidos.repositories.EstadoRepository;
-import com.ibrplanner.pedidos.repositories.ProdutoRepository;
+import com.ibrplanner.pedidos.domain.*;
+import com.ibrplanner.pedidos.enums.TipoCliente;
+import com.ibrplanner.pedidos.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -32,6 +27,11 @@ public class Mock implements CommandLineRunner {
 
     @Autowired
     private CidadeRepository repoCidade;
+
+    @Autowired
+    private ClienteRepository repoCliente;
+    @Autowired
+    private EnderecoRepository repoEndereco;
 
     /**
      * Insere uma lista de Categoria (Mock)
@@ -79,5 +79,23 @@ public class Mock implements CommandLineRunner {
         // montando a lista final com as associações Estado/Cidade
         repoEstado.saveAll(Arrays.asList(est1, est2));
         repoCidade.saveAll(Arrays.asList(c1, c2, c3));
+
+        // Insert Cliente e seus telefones associados
+        Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com",
+                "36378912377", TipoCliente.PESSOAFISICA);
+        cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+
+        // Insert Endereco
+        Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303",
+                "Jardim", "38220834", cli1, c1);
+        Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800",
+                "Centro", "38777012", cli1, c2);
+
+        // Associando Endereco ao Cliente
+        cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+
+        // montando a lista final com suas associações Cliente/Endereco
+        repoCliente.saveAll(Arrays.asList(cli1));
+        repoEndereco.saveAll(Arrays.asList(e1, e2));
     }
 }

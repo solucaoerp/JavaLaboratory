@@ -1,10 +1,7 @@
 package com.ibrplanner.pedidos.domain;
 
 import com.ibrplanner.pedidos.enums.TipoCliente;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.*;
@@ -19,7 +16,10 @@ public class Cliente implements Serializable {
     private String email;
     private String cpfOuCnpj;
     private Integer tipo;
+    @OneToMany(mappedBy = "cliente")
     private List<Endereco> enderecos = new ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "TELEFONE" )
     private Set<String> telefones = new HashSet<>();
 
     public Cliente() {
