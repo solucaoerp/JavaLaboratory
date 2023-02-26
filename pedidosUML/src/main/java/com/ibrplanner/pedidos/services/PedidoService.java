@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class PedidoService {
     @Autowired
-    PedidoRepository repo;
+    private PedidoRepository repo;
 
     public Pedido findById(Long id) {
         Optional<Pedido> obj = repo.findById(id);
