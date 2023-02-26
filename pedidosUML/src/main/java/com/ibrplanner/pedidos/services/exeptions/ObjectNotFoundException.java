@@ -1,4 +1,4 @@
-package com.ibrplanner.pedidos.exeptions;
+package com.ibrplanner.pedidos.services.exeptions;
 
 public class ObjectNotFoundException extends RuntimeException {
     private static final long serialVersionUID = 1L;

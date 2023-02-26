@@ -1,9 +1,11 @@
 package com.ibrplanner.pedidos.services;
 
 import com.ibrplanner.pedidos.domain.Categoria;
-import com.ibrplanner.pedidos.exeptions.ObjectNotFoundException;
+import com.ibrplanner.pedidos.services.exeptions.DataIntegrityException;
+import com.ibrplanner.pedidos.services.exeptions.ObjectNotFoundException;
 import com.ibrplanner.pedidos.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -28,6 +30,15 @@ public class CategoriaService {
         findById(obj.getId());
         return repo.save(obj);
     }
-
+    //deleteById
+    public void delete(Long id){
+        findById(id);
+        try {
+            repo.deleteById(id);
+        }
+        catch (DataIntegrityViolationException e){
+            throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos.");
+        }
+    }
 
 }

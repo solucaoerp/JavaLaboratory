@@ -40,4 +40,10 @@ public class CategoriaController {
         return ResponseEntity.noContent().build(); /* Success: 204 No Content */
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build(); /* Success: 204 No Content */
+    }
+
 }
