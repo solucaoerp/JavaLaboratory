@@ -13,11 +13,6 @@ public class CategoriaService {
     @Autowired
     CategoriaRepository repo;
 
-/*    public Categoria findById(Long id) {
-        Optional<Categoria> obj = repo.findById(id);
-        return obj.orElse(null);
-    }*/
-
     public Categoria findById(Long id) {
         Optional<Categoria> obj = repo.findById(id);
         return obj.orElseThrow(() ->

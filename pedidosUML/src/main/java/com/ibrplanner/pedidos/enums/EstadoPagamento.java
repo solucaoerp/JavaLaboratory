@@ -2,7 +2,7 @@ package com.ibrplanner.pedidos.enums;
 
 public enum EstadoPagamento {
     PENDENTE(1, "Pendente"),
-    QUITADO(2,"Quitado"),
+    QUITADO(2, "Quitado"),
     CANCELADO(3, "CANCELADO");
 
     private Integer codigo;

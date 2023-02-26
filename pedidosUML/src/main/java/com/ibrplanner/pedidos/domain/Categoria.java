@@ -21,7 +21,7 @@ public class Categoria implements Serializable {
     }
 
     public Categoria(Long id, String nome) {
-        // produtos já foi criado na propriedade
+        /* a property produtos foi iniciada em sua criação, por isso foi omitida neste constructor */
         this.id = id;
         this.nome = nome;
     }
