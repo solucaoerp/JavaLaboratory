@@ -16,7 +16,7 @@ public class ClienteController {
     private ClienteService service;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> findById(@PathVariable Long id) {
+    public ResponseEntity<Cliente> findById(@PathVariable Long id) {
         Cliente obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
