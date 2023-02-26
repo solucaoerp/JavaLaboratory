@@ -41,6 +41,9 @@ public class Mock implements CommandLineRunner {
     @Autowired
     private PagamentoRepository repoPagamento;
 
+    @Autowired
+    private ItemPedidoRepository repoItemPedido;
+
     /**
      * Insere uma lista de Categoria (Mock)
      *
@@ -112,7 +115,7 @@ public class Mock implements CommandLineRunner {
         Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli1, e2);
 
         // Inser Pagamento
-        Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1,6);
+        Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
 
         // Seta o pagamento no ped1
         ped1.setPagamento(pagto1);
@@ -130,7 +133,21 @@ public class Mock implements CommandLineRunner {
         repoPedido.saveAll(Arrays.asList(ped1, ped2));
         repoPagamento.saveAll(Arrays.asList(pagto1, pagto2));
 
+        // Insert ItemPedido
+        ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+        ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+        ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
 
+        // Associando os Itens de Pedido ao Pedido (Pedido conhecendo seus Itens)
+        ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+        ped2.getItens().addAll(Arrays.asList(ip3));
 
+        // Associando os Itens de Pedido ao Produto (produto conhecendo seus Itens)
+        p1.getItens().addAll(Arrays.asList(ip1));
+        p2.getItens().addAll(Arrays.asList(ip3));
+        p3.getItens().addAll(Arrays.asList(ip2));
+
+        // montando a lista final de ItemPedido com suas associações Produto/ItemPedido/Pedido
+        repoItemPedido.saveAll(Arrays.asList(ip1, ip2, ip3));
     }
 }
