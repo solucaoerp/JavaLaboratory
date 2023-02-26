@@ -20,5 +20,4 @@ public class ClienteController {
         Cliente obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
-
 }

@@ -1,5 +1,6 @@
 package com.ibrplanner.pedidos.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ibrplanner.pedidos.enums.EstadoPagamento;
 import jakarta.persistence.*;
 
@@ -13,6 +14,7 @@ public abstract class Pagamento implements Serializable {
     @Id
     private Long id;
     private Integer estado;
+    @JsonBackReference
     @OneToOne
     @JoinColumn(name = "pedido_id")
     @MapsId
