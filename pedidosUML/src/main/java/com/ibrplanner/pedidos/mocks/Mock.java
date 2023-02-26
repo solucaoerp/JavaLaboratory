@@ -1,12 +1,14 @@
 package com.ibrplanner.pedidos.mocks;
 
 import com.ibrplanner.pedidos.domain.*;
+import com.ibrplanner.pedidos.enums.EstadoPagamento;
 import com.ibrplanner.pedidos.enums.TipoCliente;
 import com.ibrplanner.pedidos.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 /**
@@ -32,6 +34,12 @@ public class Mock implements CommandLineRunner {
     private ClienteRepository repoCliente;
     @Autowired
     private EnderecoRepository repoEndereco;
+
+    @Autowired
+    private PedidoRepository repoPedido;
+
+    @Autowired
+    private PagamentoRepository repoPagamento;
 
     /**
      * Insere uma lista de Categoria (Mock)
@@ -97,5 +105,32 @@ public class Mock implements CommandLineRunner {
         // montando a lista final com suas associações Cliente/Endereco
         repoCliente.saveAll(Arrays.asList(cli1));
         repoEndereco.saveAll(Arrays.asList(e1, e2));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        // Insert Pedido
+        Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
+        Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli1, e2);
+
+        // Inser Pagamento
+        Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1,6);
+
+        // Seta o pagamento no ped1
+        ped1.setPagamento(pagto1);
+
+        Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2,
+                sdf.parse("20/10/2017 00:00"), null);
+
+        // Seta o pagamento no ped2
+        ped2.setPagamento(pagto2);
+
+        // Setar os pedidos referente ao Cliente
+        cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+
+        // montando a lista final com suas associações Pedido/Pagamento
+        repoPedido.saveAll(Arrays.asList(ped1, ped2));
+        repoPagamento.saveAll(Arrays.asList(pagto1, pagto2));
+
+
+
     }
 }
