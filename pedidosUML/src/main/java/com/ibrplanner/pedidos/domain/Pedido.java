@@ -1,7 +1,6 @@
 package com.ibrplanner.pedidos.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -18,10 +17,10 @@ public class Pedido implements Serializable {
     private Long id;
     @JsonFormat(pattern = "dd/MM/yyyy hh:mm")
     private Date instante;
-    @JsonManagedReference
+
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
     private Pagamento pagamento;
-    @JsonManagedReference
+
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
