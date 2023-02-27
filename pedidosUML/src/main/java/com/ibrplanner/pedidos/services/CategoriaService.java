@@ -52,7 +52,7 @@ public class CategoriaService {
     }
 
     private CategoriaDTO toCategoriaDTO(Categoria categoria) {
-        return DTOUtils.toDTO(categoria, CategoriaDTO.class);
+        return DTOUtils.convertToDTO(categoria, CategoriaDTO.class);
     }
 
     public Page<CategoriaDTO> findPage(Integer numPage, Integer linesPerPage, String orderBy, String direction) {
