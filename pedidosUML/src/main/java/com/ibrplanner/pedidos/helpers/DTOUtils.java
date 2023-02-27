@@ -62,4 +62,19 @@ public class DTOUtils {
         List<D> dtoList = toDTOList(page.getContent(), dtoClass);
         return new PageImpl<>(dtoList, page.getPageable(), page.getTotalElements());
     }
+
+    /**
+     * Converte um objeto DTO para um objeto de domínio.
+     *
+     * @param dto         O objeto DTO a ser convertido.
+     * @param domainClass A classe do objeto de domínio.
+     * @param <Domain>    O tipo do objeto de domínio.
+     * @param <Dto>       O tipo do objeto DTO.
+     * @return Um objeto de domínio preenchido com as propriedades correspondentes do DTO.
+     */
+    public static <Domain, Dto> Domain convertToDomain(Dto dto, Class<Domain> domainClass) {
+        Domain domain = BeanUtils.instantiateClass(domainClass);
+        BeanUtils.copyProperties(dto, domain);
+        return domain;
+    }
 }

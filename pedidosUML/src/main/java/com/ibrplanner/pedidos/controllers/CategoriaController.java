@@ -2,7 +2,9 @@ package com.ibrplanner.pedidos.controllers;
 
 import com.ibrplanner.pedidos.domain.Categoria;
 import com.ibrplanner.pedidos.dtos.CategoriaDTO;
+import com.ibrplanner.pedidos.helpers.DTOUtils;
 import com.ibrplanner.pedidos.services.CategoriaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +43,8 @@ public class CategoriaController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
+    public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto) {
+        Categoria obj = DTOUtils.convertToDomain(objDto, Categoria.class);
         obj = service.insert(obj);
 
         /* Boa Prática: devolve a URI do novo recurso inserido no Header */
@@ -51,7 +54,8 @@ public class CategoriaController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Categoria obj) {
+    public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody CategoriaDTO objDto) {
+        Categoria obj = DTOUtils.convertToDomain(objDto, Categoria.class);
         obj.setId(id); /* garante a atualização da Categoria correta */
         obj = service.update(obj);
 
