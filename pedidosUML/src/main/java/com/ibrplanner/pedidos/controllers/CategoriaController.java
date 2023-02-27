@@ -4,6 +4,7 @@ import com.ibrplanner.pedidos.domain.Categoria;
 import com.ibrplanner.pedidos.dtos.CategoriaDTO;
 import com.ibrplanner.pedidos.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -29,6 +30,16 @@ public class CategoriaController {
         return ResponseEntity.ok().body(listDTO);
     }
 
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    public ResponseEntity<Page<CategoriaDTO>> findPage(
+            @RequestParam(value = "numPage", defaultValue = "0") Integer numPage,
+            @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
+            @RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
+        Page<CategoriaDTO> pageDTO = service.findPage(numPage, linesPerPage, orderBy, direction);
+        return ResponseEntity.ok().body(pageDTO);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
         obj = service.insert(obj);
@@ -52,5 +63,4 @@ public class CategoriaController {
         service.delete(id);
         return ResponseEntity.noContent().build(); /* Success: 204 No Content */
     }
-
 }

@@ -55,6 +55,12 @@ public class Mock implements CommandLineRunner {
         // Insert Categoria
         Categoria cat1 = new Categoria(null, "INFORMÁTICA");
         Categoria cat2 = new Categoria(null, "ESCRITÓRIO");
+        Categoria cat3 = new Categoria(null, "CAMA MESA E BANHO");
+        Categoria cat4 = new Categoria(null, "ELETRÔNICOS");
+        Categoria cat5 = new Categoria(null, "JARDINAGEM");
+        Categoria cat6 = new Categoria(null, "DECORAÇÃO");
+        Categoria cat7 = new Categoria(null, "PERFUMARIA");
+
         // Insert Produto
         Produto p1 = new Produto(null, "Computador", 2000.00);
         Produto p2 = new Produto(null, "Impressora", 800.00);
@@ -70,7 +76,7 @@ public class Mock implements CommandLineRunner {
         p3.getCategorias().addAll(Arrays.asList(cat1));
 
         // montando a lista final com as associações Produto/Categoria/Produto
-        repoCatetoria.saveAll(Arrays.asList(cat1, cat2));
+        repoCatetoria.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
         repoProduto.saveAll(Arrays.asList(p1, p2, p3));
 
         // Insert Estado

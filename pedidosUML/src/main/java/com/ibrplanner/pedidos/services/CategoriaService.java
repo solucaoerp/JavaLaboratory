@@ -2,15 +2,17 @@ package com.ibrplanner.pedidos.services;
 
 import com.ibrplanner.pedidos.domain.Categoria;
 import com.ibrplanner.pedidos.dtos.CategoriaDTO;
+import com.ibrplanner.pedidos.helpers.DTOUtils;
 import com.ibrplanner.pedidos.repositories.CategoriaRepository;
 import com.ibrplanner.pedidos.services.exeptions.DataIntegrityException;
 import com.ibrplanner.pedidos.services.exeptions.ObjectNotFoundException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,12 +29,7 @@ public class CategoriaService {
 
     public List<CategoriaDTO> findAll() {
         List<Categoria> list = repo.findAll();
-        List<CategoriaDTO> listDTO = new ArrayList<>();
-        for (Categoria categoria : list) {
-            CategoriaDTO categoriaDTO = toCategoriaDTO(categoria);
-            listDTO.add(categoriaDTO);
-        }
-        return listDTO;
+        return DTOUtils.toDTOList(list, CategoriaDTO.class);
     }
 
     public Categoria insert(Categoria obj) {
@@ -55,8 +52,12 @@ public class CategoriaService {
     }
 
     private CategoriaDTO toCategoriaDTO(Categoria categoria) {
-        CategoriaDTO categoriaDTO = new CategoriaDTO();
-        BeanUtils.copyProperties(categoria, categoriaDTO);
-        return categoriaDTO;
+        return DTOUtils.toDTO(categoria, CategoriaDTO.class);
+    }
+
+    public Page<CategoriaDTO> findPage(Integer numPage, Integer linesPerPage, String orderBy, String direction) {
+        PageRequest pageRequest = PageRequest.of(numPage, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Page<Categoria> page = repo.findAll(pageRequest);
+        return DTOUtils.toDTOPage(page, CategoriaDTO.class);
     }
 }
