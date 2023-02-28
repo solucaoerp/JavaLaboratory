@@ -38,8 +38,9 @@ public class CategoriaService {
     }
 
     public Categoria update(Categoria obj) {
-        findById(obj.getId());
-        return repo.save(obj);
+        Categoria newObj = findById(obj.getId());
+        updateData(newObj, obj);
+        return repo.save(newObj);
     }
 
     public void delete(Long id) {
@@ -59,5 +60,9 @@ public class CategoriaService {
         PageRequest pageRequest = PageRequest.of(numPage, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         Page<Categoria> page = repo.findAll(pageRequest);
         return DTOUtils.toDTOPage(page, CategoriaDTO.class);
+    }
+
+    private void updateData(Categoria newObj, Categoria obj) {
+        newObj.setNome(obj.getNome());
     }
 }
