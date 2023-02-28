@@ -2,6 +2,7 @@ package com.ibrplanner.pedidos.controllers;
 
 import com.ibrplanner.pedidos.domain.Cliente;
 import com.ibrplanner.pedidos.dtos.ClienteDTO;
+import com.ibrplanner.pedidos.dtos.ClienteNewDTO;
 import com.ibrplanner.pedidos.helpers.DTOUtils;
 import com.ibrplanner.pedidos.services.ClienteService;
 import jakarta.validation.Valid;
@@ -43,8 +44,8 @@ public class ClienteController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTO objDto) {
-        Cliente obj = DTOUtils.convertToDomain(objDto, Cliente.class);
+    public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto) {
+        Cliente obj = service.fromDTO(objDto); // DTOUtils.convertToDomain(objDto, Cliente.class);
         obj = service.insert(obj);
 
         /* Boa Prática: devolve a URI do novo recurso inserido no Header */
