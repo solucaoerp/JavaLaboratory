@@ -65,19 +65,40 @@ public class Mock implements CommandLineRunner {
         Produto p1 = new Produto(null, "Computador", 2000.00);
         Produto p2 = new Produto(null, "Impressora", 800.00);
         Produto p3 = new Produto(null, "Mouse", 80.00);
+        Produto p4 = new Produto(null, "Mesa de Escritório", 300.00);
+        Produto p5 = new Produto(null, "Toalha", 50.00);
+        Produto p6 = new Produto(null, "Colcha", 200.00);
+        Produto p7 = new Produto(null, "TV true color", 1200.00);
+        Produto p8 = new Produto(null, "Roçadeira", 800.00);
+        Produto p9 = new Produto(null, "Abajour", 100.00);
+        Produto p10 = new Produto(null, "Pendente", 180.00);
+        Produto p11 = new Produto(null, "Shampoo", 90.00);
 
         // Associando Produtos as Castegorias (Neste momento as Categorias passa a conhecem seus Produtos)
         cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
-        cat2.getProdutos().addAll(Arrays.asList(p2));
+        cat2.getProdutos().addAll(Arrays.asList(p2, p4));
+        cat3.getProdutos().addAll(Arrays.asList(p5, p6));
+        cat4.getProdutos().addAll(Arrays.asList(p1, p2, p3, p7));
+        cat5.getProdutos().addAll(Arrays.asList(p8));
+        cat6.getProdutos().addAll(Arrays.asList(p9, p10));
+        cat7.getProdutos().addAll(Arrays.asList(p11));
 
         // Associando Categorias aos Produtos (Neste momento os Produtos passa a conhecer suas Categorias)
-        p1.getCategorias().addAll(Arrays.asList(cat1));
-        p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
-        p3.getCategorias().addAll(Arrays.asList(cat1));
+        p1.getCategorias().addAll(Arrays.asList(cat1, cat4));
+        p2.getCategorias().addAll(Arrays.asList(cat1, cat2, cat4));
+        p3.getCategorias().addAll(Arrays.asList(cat1, cat4));
+        p4.getCategorias().addAll(Arrays.asList(cat2));
+        p5.getCategorias().addAll(Arrays.asList(cat3));
+        p6.getCategorias().addAll(Arrays.asList(cat3));
+        p7.getCategorias().addAll(Arrays.asList(cat4));
+        p8.getCategorias().addAll(Arrays.asList(cat5));
+        p9.getCategorias().addAll(Arrays.asList(cat6));
+        p10.getCategorias().addAll(Arrays.asList(cat6));
+        p11.getCategorias().addAll(Arrays.asList(cat7));
 
         // montando a lista final com as associações Produto/Categoria/Produto
         repoCatetoria.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
-        repoProduto.saveAll(Arrays.asList(p1, p2, p3));
+        repoProduto.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
 
         // Insert Estado
         Estado est1 = new Estado(null, "Minas Gerais");
@@ -98,15 +119,12 @@ public class Mock implements CommandLineRunner {
         repoCidade.saveAll(Arrays.asList(c1, c2, c3));
 
         // Insert Cliente e seus telefones associados
-        Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com",
-                "36378912377", TipoCliente.PESSOAFISICA);
+        Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOAFISICA);
         cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 
         // Insert Endereco
-        Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303",
-                "Jardim", "38220834", cli1, c1);
-        Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800",
-                "Centro", "38777012", cli1, c2);
+        Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
+        Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
 
         // Associando Endereco ao Cliente
         cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
@@ -126,8 +144,7 @@ public class Mock implements CommandLineRunner {
         // Seta o pagamento no ped1
         ped1.setPagamento(pagto1);
 
-        Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2,
-                sdf.parse("20/10/2017 00:00"), null);
+        Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"), null);
 
         // Seta o pagamento no ped2
         ped2.setPagamento(pagto2);
