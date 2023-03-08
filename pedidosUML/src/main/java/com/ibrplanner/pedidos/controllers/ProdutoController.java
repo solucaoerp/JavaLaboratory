@@ -2,7 +2,6 @@ package com.ibrplanner.pedidos.controllers;
 
 import com.ibrplanner.pedidos.controllers.utils.URL;
 import com.ibrplanner.pedidos.domain.Produto;
-import com.ibrplanner.pedidos.dtos.CategoriaDTO;
 import com.ibrplanner.pedidos.dtos.ProdutoDTO;
 import com.ibrplanner.pedidos.services.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
