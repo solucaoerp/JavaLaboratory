@@ -49,13 +49,13 @@ public class ClienteService {
         repoEndereco.saveAll(obj.getEnderecos());
         return obj;
     }
-
+    @Transactional
     public Cliente update(Cliente obj) {
         Cliente newObj = findById(obj.getId());
         updateData(newObj, obj);
         return repo.save(newObj);
     }
-
+    @Transactional
     public void delete(Long id) {
         findById(id);
         try {
@@ -74,7 +74,7 @@ public class ClienteService {
         Page<Cliente> page = repo.findAll(pageRequest);
         return DTOUtils.toDTOPage(page, ClienteDTO.class);
     }
-
+    @Transactional
     private void updateData(Cliente newObj, Cliente obj) {
         newObj.setNome(obj.getNome());
         newObj.setEmail(obj.getEmail());

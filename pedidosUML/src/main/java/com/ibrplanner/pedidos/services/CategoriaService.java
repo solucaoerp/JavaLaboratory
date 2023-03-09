@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,18 +32,18 @@ public class CategoriaService {
         List<Categoria> list = repo.findAll();
         return DTOUtils.toDTOList(list, CategoriaDTO.class);
     }
-
+    @Transactional
     public Categoria insert(Categoria obj) {
         obj.setId(null); /* garante que seja um novo registro, do contrário é um update */
         return repo.save(obj);
     }
-
+    @Transactional
     public Categoria update(Categoria obj) {
         Categoria newObj = findById(obj.getId());
         updateData(newObj, obj);
         return repo.save(newObj);
     }
-
+    @Transactional
     public void delete(Long id) {
         findById(id);
         try {
@@ -61,7 +62,7 @@ public class CategoriaService {
         Page<Categoria> page = repo.findAll(pageRequest);
         return DTOUtils.toDTOPage(page, CategoriaDTO.class);
     }
-
+    @Transactional
     private void updateData(Categoria newObj, Categoria obj) {
         newObj.setNome(obj.getNome());
     }
