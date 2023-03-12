@@ -1,24 +1,17 @@
-package com.ibrplanner.pedidos.mocks;
+package com.ibrplanner.pedidos.services;
 
 import com.ibrplanner.pedidos.domain.*;
 import com.ibrplanner.pedidos.enums.EstadoPagamento;
 import com.ibrplanner.pedidos.enums.TipoCliente;
 import com.ibrplanner.pedidos.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-
-/**
- * Para desativar a execução deste Mock, comente o método específico da classe, ou,
- * remova a Anotation @Component.
- * Para determinar a ordem de execução das classes Mock, acrescente a Anotation @DependsOn("categoriaMock")
- */
-@Component
-public class Mock implements CommandLineRunner {
-
+@Service
+public class DBServiceTest {
     @Autowired
     private CategoriaRepository repoCatetoria;
     @Autowired
@@ -44,14 +37,7 @@ public class Mock implements CommandLineRunner {
     @Autowired
     private ItemPedidoRepository repoItemPedido;
 
-    /**
-     * Insere uma lista de Categoria (Mock)
-     *
-     * @param args argumentos do método principal de entrada
-     * @throws Exception
-     */
-    @Override
-    public void run(String... args) throws Exception {
+    public void instantiateTestDatabase() throws ParseException {
         // Insert Categoria
         Categoria cat1 = new Categoria(null, "INFORMÁTICA");
         Categoria cat2 = new Categoria(null, "ESCRITÓRIO");
