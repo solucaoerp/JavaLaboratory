@@ -58,3 +58,6 @@ dist-ssr
 *.sln
 *.sw?
 
+### Maven Wrapper ###
+.mvn
+
