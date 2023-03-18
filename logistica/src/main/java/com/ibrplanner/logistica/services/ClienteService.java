@@ -2,6 +2,7 @@ package com.ibrplanner.logistica.services;
 
 import com.ibrplanner.logistica.entities.Cliente;
 import com.ibrplanner.logistica.repositories.ClienteRepository;
+import com.ibrplanner.logistica.services.exceptions.ExceptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,15 @@ public class ClienteService {
 
     @Transactional
     public Cliente save(Cliente cliente) {
+
+        boolean emailEmUso = repo.findByEmail(cliente.getEmail())
+                .stream()
+                .anyMatch(clienteExistente -> !clienteExistente.equals(cliente));
+
+        if (emailEmUso) {
+            throw new ExceptionService("Este e-mail já existe.");
+        }
+
         return repo.save(cliente);
     }
 
