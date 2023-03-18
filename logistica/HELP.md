@@ -1,8 +1,9 @@
-## Documentação HTTP/Code
+## Características da Aplicação
+***
 
-### Características do Controller
+### Camada Controller
 
-Retorno tradicional (Funcional) com Optional
+Implementação com Optional
 
 ``` java
     @GetMapping(value = "/{id}")
@@ -17,7 +18,7 @@ Retorno tradicional (Funcional) com Optional
     }
 ```
 
-Retorno elegante (Funcional) com Optional e Lambda Expression
+Implementação com Lambda Expression
 
 ``` java
     @GetMapping(value = "/{id}")
@@ -26,7 +27,18 @@ Retorno elegante (Funcional) com Optional e Lambda Expression
     }
 ```
 
-### Características do Repository
+Implementação com Method Reference
+
+``` java
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Cliente> findById(@PathVariable Long id) {
+        return repo.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+```
+
+---
+
+### Camada Repository
 
 #### Métodos customizados.
 
@@ -40,8 +52,11 @@ Busca aproximada com Like %value%
     List<Cliente> findByNomeContaining(String nome);
 ```
 
+***
 
-### Referências e links úteis
+### Fontes [Referências e links úteis]
+
+#### Documentação HTTP/Code
 
 Aqui estão alguns links úteis que podem ser usados como referência:
 

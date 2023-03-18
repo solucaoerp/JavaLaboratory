@@ -25,7 +25,7 @@ public class ClienteController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Cliente> findById(@PathVariable Long id) {
-        return repo.findById(id).map(cliente -> ResponseEntity.ok(cliente)).orElse(ResponseEntity.notFound().build());
+        return repo.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
 }
