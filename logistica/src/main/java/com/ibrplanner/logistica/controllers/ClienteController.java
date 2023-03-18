@@ -28,18 +28,28 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    private Cliente save(@RequestBody Cliente cliente){
+    private Cliente save(@RequestBody Cliente cliente) {
         return repo.save(cliente);
     }
 
     @PutMapping(value = "/{id}")
-    private ResponseEntity<Cliente> update(@RequestBody Cliente cliente, @PathVariable Long id){
-        if(!repo.existsById(id)){
+    private ResponseEntity<Cliente> update(@RequestBody Cliente cliente, @PathVariable Long id) {
+        if (!repo.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
         cliente.setId(id);
         cliente = repo.save(cliente);
         return ResponseEntity.ok(cliente);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        if (!repo.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        repo.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
