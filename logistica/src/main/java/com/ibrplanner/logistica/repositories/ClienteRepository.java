@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
-    List<Cliente> findByNome(String nome); /* busca exata */
+    List<Cliente> findByNome(String nome);
     List<Cliente> findByNomeContaining(String nome); /* busca aproximada com Like %value% */
     @Override
     List<Cliente> findAll();
