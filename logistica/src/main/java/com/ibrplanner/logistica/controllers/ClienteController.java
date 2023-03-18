@@ -32,4 +32,14 @@ public class ClienteController {
         return repo.save(cliente);
     }
 
+    @PutMapping(value = "/{id}")
+    private ResponseEntity<Cliente> update(@RequestBody Cliente cliente, @PathVariable Long id){
+        if(!repo.existsById(id)){
+            return ResponseEntity.notFound().build();
+        }
+        cliente.setId(id);
+        cliente = repo.save(cliente);
+        return ResponseEntity.ok(cliente);
+    }
+
 }
