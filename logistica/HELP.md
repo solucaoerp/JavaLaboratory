@@ -1,5 +1,6 @@
 ## Características da Aplicação
-***
+
+---
 
 ### Camada Controller
 
