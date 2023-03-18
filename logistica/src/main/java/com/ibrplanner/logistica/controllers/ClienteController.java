@@ -2,6 +2,7 @@ package com.ibrplanner.logistica.controllers;
 
 import com.ibrplanner.logistica.entities.Cliente;
 import com.ibrplanner.logistica.repositories.ClienteRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +29,12 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    private Cliente save(@RequestBody Cliente cliente) {
+    private Cliente save(@Valid @RequestBody Cliente cliente) {
         return repo.save(cliente);
     }
 
     @PutMapping(value = "/{id}")
-    private ResponseEntity<Cliente> update(@RequestBody Cliente cliente, @PathVariable Long id) {
+    private ResponseEntity<Cliente> update(@Valid @RequestBody Cliente cliente, @PathVariable Long id) {
         if (!repo.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
