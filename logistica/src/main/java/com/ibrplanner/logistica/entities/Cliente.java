@@ -21,13 +21,14 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    @Size(max = 60)
+    @Size(min = 5, max = 60)
     private String nome;
     @NotBlank
-    @Size(max = 15)
+    @Size(min = 11, max = 11)
     private String telefone;
     @NotBlank
     @Email
+    @Size(min = 5, max = 60)
     private String email;
 
 }
