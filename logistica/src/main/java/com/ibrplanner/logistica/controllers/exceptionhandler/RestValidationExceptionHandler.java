@@ -1,4 +1,4 @@
-package com.ibrplanner.logistica.exceptionhandler;
+package com.ibrplanner.logistica.controllers.exceptionhandler;
 
 import com.ibrplanner.logistica.services.exceptions.ExceptionService;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class RestValidationExceptionHandler extends ResponseEntityExceptionHandl
 
         ApiValidationResponseError error = new ApiValidationResponseError();
         error.setStatus(status.value());
-        error.setDataHora(LocalDateTime.now());
+        error.setDataHora(OffsetDateTime.now());
         error.setTitulo("Um ou mais campos foram preenchidos incorretamente.");
         error.setCampos(camposError);
 
@@ -59,7 +59,7 @@ public class RestValidationExceptionHandler extends ResponseEntityExceptionHandl
 
         ApiValidationResponseError error = new ApiValidationResponseError();
         error.setStatus(status.value());
-        error.setDataHora(LocalDateTime.now());
+        error.setDataHora(OffsetDateTime.now());
         error.setTitulo(ex.getMessage());
 
         return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
