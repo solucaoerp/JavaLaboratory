@@ -53,7 +53,23 @@ Busca aproximada com Like %value%
     List<Cliente> findByNomeContaining(String nome);
 ```
 
-***
+---
+
+#### SQL's para testes
+
+Tabela: Cliente
+
+```roomsql 
+INSERT INTO cliente (nome, telefone, email) VALUES
+('João Silva', '11999998888', 'joao.silva@gmail.com'),
+('Maria Santos', '11988887777', 'maria.santos@hotmail.com'),
+('Pedro Souza', '11977776666', 'pedro.souza@yahoo.com'),
+('Ana Costa', '11966665555', 'ana.costa@outlook.com'),
+('Lucas Oliveira', '11955554444', 'lucas.oliveira@gmail.com');
+
+```
+
+---
 
 ### Fontes [Referências e links úteis]
 

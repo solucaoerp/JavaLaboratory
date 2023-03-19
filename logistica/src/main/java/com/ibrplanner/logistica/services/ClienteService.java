@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -20,8 +19,8 @@ public class ClienteService {
         return repo.findAll();
     }
 
-    public Optional<Cliente> findById(Long id) {
-        return repo.findById(id);
+    public Cliente findById(Long id) {
+        return repo.findById(id).orElseThrow(() -> new ExceptionService("Cliente não encontrato"));
     }
 
     public boolean existsById(Long id) {
