@@ -32,5 +32,4 @@ public class Cliente {
     @Email
     @Size(min = 5, max = 60)
     private String email;
-
 }
