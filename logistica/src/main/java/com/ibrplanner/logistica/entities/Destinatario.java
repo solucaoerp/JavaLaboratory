@@ -6,9 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
 @Embeddable
+@Setter
+@Getter
 public class Destinatario {
     @NotBlank
     @Column(name = "destino_nome")

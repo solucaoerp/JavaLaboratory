@@ -1,6 +1,6 @@
 package com.ibrplanner.logistica.controllers;
 
-import com.ibrplanner.logistica.controllers.dtos.EntregaDTO;
+import com.ibrplanner.logistica.dtos.EntregaDTO;
 import com.ibrplanner.logistica.services.EntregaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

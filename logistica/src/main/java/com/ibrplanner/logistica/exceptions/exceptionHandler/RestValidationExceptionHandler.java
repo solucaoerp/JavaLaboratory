@@ -1,6 +1,6 @@
-package com.ibrplanner.logistica.controllers.exceptionhandler;
+package com.ibrplanner.logistica.exceptions.exceptionHandler;
 
-import com.ibrplanner.logistica.services.exceptions.ExceptionService;
+import com.ibrplanner.logistica.exceptions.exceptionService.ExceptionService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

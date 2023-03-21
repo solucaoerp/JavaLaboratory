@@ -13,9 +13,9 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-@Getter
-@Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Setter
+@Getter
 @Entity
 public class Entrega {
     @EqualsAndHashCode.Include
@@ -35,7 +35,7 @@ public class Entrega {
     private BigDecimal taxaEntrega;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Enumerated(EnumType.STRING)
-    private StatusEntrega status;
+    private StatusEntregaEnum status;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private OffsetDateTime dataPedido;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

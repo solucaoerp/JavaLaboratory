@@ -1,15 +1,15 @@
 package com.ibrplanner.logistica.services;
 
-import com.ibrplanner.logistica.controllers.dtos.DestinatarioDTO;
-import com.ibrplanner.logistica.controllers.dtos.EntregaDTO;
+import com.ibrplanner.logistica.common.ObjectConverter;
+import com.ibrplanner.logistica.dtos.DestinatarioDTO;
+import com.ibrplanner.logistica.dtos.EntregaDTO;
 import com.ibrplanner.logistica.entities.Cliente;
 import com.ibrplanner.logistica.entities.Destinatario;
 import com.ibrplanner.logistica.entities.Entrega;
-import com.ibrplanner.logistica.entities.StatusEntrega;
+import com.ibrplanner.logistica.entities.StatusEntregaEnum;
+import com.ibrplanner.logistica.exceptions.exceptionService.ExceptionService;
 import com.ibrplanner.logistica.repositories.ClienteRepository;
 import com.ibrplanner.logistica.repositories.EntregaRepository;
-import com.ibrplanner.logistica.services.converterUtils.ConverterUtils;
-import com.ibrplanner.logistica.services.exceptions.ExceptionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,8 +33,8 @@ public class EntregaService {
     private ModelMapper modelMapper;
 
     public List<EntregaDTO> listarTodos() {
-        List<Entrega> entregas = entregaRepository.findAll();
-        return toListEntregaDTO(entregas);
+        List<Entrega> entregases = entregaRepository.findAll();
+        return toListEntregaDTO(entregases);
     }
 
     public EntregaDTO buscarPorId(Long id) {
@@ -48,31 +48,31 @@ public class EntregaService {
                 .orElseThrow(() -> new ExceptionService("Cliente não encontrado."));
 
         Entrega entrega = toEntrega(entregaDTO, cliente);
-        entrega.setStatus(StatusEntrega.PENDENTE);
+        entrega.setStatus(StatusEntregaEnum.PENDENTE);
         entrega.setDataPedido(OffsetDateTime.now());
         entrega = entregaRepository.save(entrega);
         return toEntregaDTO(entrega);
     }
 
     private Entrega toEntrega(EntregaDTO entregaDTO, Cliente cliente) {
-        Entrega entrega = ConverterUtils.toModel(entregaDTO, Entrega.class);
-        entrega.setCliente(ConverterUtils.toModel(cliente, Cliente.class));
+        Entrega entrega = ObjectConverter.toModel(entregaDTO, Entrega.class);
+        entrega.setCliente(ObjectConverter.toModel(cliente, Cliente.class));
         return entrega;
     }
 
     private Destinatario toDestinatario(DestinatarioDTO destinatarioDTO) {
-        return ConverterUtils.toModel(destinatarioDTO, Destinatario.class);
+        return ObjectConverter.toModel(destinatarioDTO, Destinatario.class);
     }
 
     private EntregaDTO toEntregaDTO(Entrega entrega) {
-        return ConverterUtils.toModel(entrega, EntregaDTO.class);
+        return ObjectConverter.toModel(entrega, EntregaDTO.class);
     }
 
     private DestinatarioDTO toDestinatarioDTO(Destinatario destinatario) {
-        return ConverterUtils.toModel(destinatario, DestinatarioDTO.class);
+        return ObjectConverter.toModel(destinatario, DestinatarioDTO.class);
     }
 
-    private List<EntregaDTO> toListEntregaDTO(List<Entrega> entregas) {
-        return ConverterUtils.toListModel(entregas, EntregaDTO.class, modelMapper);
+    private List<EntregaDTO> toListEntregaDTO(List<Entrega> entregases) {
+        return ObjectConverter.toListModel(entregases, EntregaDTO.class, modelMapper);
     }
 }

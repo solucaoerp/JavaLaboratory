@@ -1,4 +1,4 @@
-package com.ibrplanner.logistica.controllers.config;
+package com.ibrplanner.logistica.settings;
 
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;

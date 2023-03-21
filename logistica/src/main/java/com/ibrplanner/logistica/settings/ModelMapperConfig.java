@@ -1,4 +1,4 @@
-package com.ibrplanner.logistica.controllers.config;
+package com.ibrplanner.logistica.settings;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

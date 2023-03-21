@@ -12,10 +12,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-@Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Setter
+@Getter
+@Entity
 public class Cliente {
     @NotNull(groups = ValidationGroups.ClienteId.class)
     @EqualsAndHashCode.Include

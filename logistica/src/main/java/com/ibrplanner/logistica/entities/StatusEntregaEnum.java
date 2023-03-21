@@ -1,5 +1,5 @@
 package com.ibrplanner.logistica.entities;
 
-public enum StatusEntrega {
+public enum StatusEntregaEnum {
     PENDENTE, FINALIZADA, CANCELADA;
 }

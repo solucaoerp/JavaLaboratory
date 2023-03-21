@@ -1,10 +1,10 @@
-package com.ibrplanner.logistica.controllers.dtos;
+package com.ibrplanner.logistica.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 public class DestinatarioDTO {
     private String nome;
     private String logradouro;

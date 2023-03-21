@@ -1,4 +1,4 @@
-package com.ibrplanner.logistica.services.converterUtils;
+package com.ibrplanner.logistica.common;
 
 import org.modelmapper.ModelMapper;
 
@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 /**
  * Classe utilitária para conversão de objetos.
  */
-public class ConverterUtils {
+public class ObjectConverter {
 
     private static final ModelMapper modelMapper = new ModelMapper();
 

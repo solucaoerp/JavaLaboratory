@@ -1,4 +1,4 @@
-package com.ibrplanner.logistica.controllers.exceptionhandler;
+package com.ibrplanner.logistica.exceptions.exceptionHandler;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
