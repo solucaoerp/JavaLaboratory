@@ -8,14 +8,15 @@ import com.ibrplanner.logistica.entities.Entrega;
 import com.ibrplanner.logistica.entities.StatusEntrega;
 import com.ibrplanner.logistica.repositories.ClienteRepository;
 import com.ibrplanner.logistica.repositories.EntregaRepository;
+import com.ibrplanner.logistica.services.converterUtils.ConverterUtils;
 import com.ibrplanner.logistica.services.exceptions.ExceptionService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class EntregaService {
@@ -28,6 +29,8 @@ public class EntregaService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
 
     public List<EntregaDTO> listarTodos() {
         List<Entrega> entregas = entregaRepository.findAll();
@@ -40,8 +43,10 @@ public class EntregaService {
     }
 
     public EntregaDTO salvar(EntregaDTO entregaDTO) {
+
         Cliente cliente = clienteRepository.findById(entregaDTO.getCliente().getId())
                 .orElseThrow(() -> new ExceptionService("Cliente não encontrado."));
+
         Entrega entrega = toEntrega(entregaDTO, cliente);
         entrega.setStatus(StatusEntrega.PENDENTE);
         entrega.setDataPedido(OffsetDateTime.now());
@@ -50,49 +55,24 @@ public class EntregaService {
     }
 
     private Entrega toEntrega(EntregaDTO entregaDTO, Cliente cliente) {
-        Entrega entrega = new Entrega();
-        entrega.setId(entregaDTO.getId());
-        entrega.setCliente(cliente);
-        entrega.setDestinatario(toDestinatario(entregaDTO.getDestinatario()));
-        entrega.setTaxaEntrega(entregaDTO.getTaxaEntrega());
-        entrega.setStatus(StatusEntrega.PENDENTE);
-        entrega.setDataPedido(OffsetDateTime.now());
+        Entrega entrega = ConverterUtils.toModel(entregaDTO, Entrega.class);
+        entrega.setCliente(ConverterUtils.toModel(cliente, Cliente.class));
         return entrega;
     }
 
     private Destinatario toDestinatario(DestinatarioDTO destinatarioDTO) {
-        Destinatario destinatario = new Destinatario();
-        destinatario.setNome(destinatarioDTO.getNome());
-        destinatario.setLogradouro(destinatarioDTO.getLogradouro());
-        destinatario.setNumero(destinatarioDTO.getNumero());
-        destinatario.setComplemento(destinatarioDTO.getComplemento());
-        destinatario.setBairro(destinatarioDTO.getBairro());
-        return destinatario;
+        return ConverterUtils.toModel(destinatarioDTO, Destinatario.class);
     }
 
     private EntregaDTO toEntregaDTO(Entrega entrega) {
-        EntregaDTO entregaDTO = new EntregaDTO();
-        entregaDTO.setId(entrega.getId());
-        entregaDTO.setCliente(entrega.getCliente());
-        entregaDTO.setDestinatario(toDestinatarioDTO(entrega.getDestinatario()));
-        entregaDTO.setTaxaEntrega(entrega.getTaxaEntrega());
-        entregaDTO.setStatus(entrega.getStatus());
-        entregaDTO.setDataPedido(entrega.getDataPedido());
-        entregaDTO.setDataFinalizacao(entrega.getDataFinalizacao());
-        return entregaDTO;
+        return ConverterUtils.toModel(entrega, EntregaDTO.class);
     }
 
     private DestinatarioDTO toDestinatarioDTO(Destinatario destinatario) {
-        DestinatarioDTO destinatarioDTO = new DestinatarioDTO();
-        destinatarioDTO.setNome(destinatario.getNome());
-        destinatarioDTO.setLogradouro(destinatario.getLogradouro());
-        destinatarioDTO.setNumero(destinatario.getNumero());
-        destinatarioDTO.setComplemento(destinatario.getComplemento());
-        destinatarioDTO.setBairro(destinatario.getBairro());
-        return destinatarioDTO;
+        return ConverterUtils.toModel(destinatario, DestinatarioDTO.class);
     }
 
     private List<EntregaDTO> toListEntregaDTO(List<Entrega> entregas) {
-        return entregas.stream().map(this::toEntregaDTO).collect(Collectors.toList());
+        return ConverterUtils.toListModel(entregas, EntregaDTO.class, modelMapper);
     }
 }
