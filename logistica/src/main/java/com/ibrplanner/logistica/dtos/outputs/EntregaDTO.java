@@ -1,6 +1,5 @@
-package com.ibrplanner.logistica.dtos;
+package com.ibrplanner.logistica.dtos.outputs;
 
-import com.ibrplanner.logistica.entities.Cliente;
 import com.ibrplanner.logistica.entities.StatusEntregaEnum;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,11 +11,9 @@ import java.time.OffsetDateTime;
 @Getter
 public class EntregaDTO {
     private Long id;
-    //private String nomeCliente;
-    private Cliente cliente;
+    private ClienteResumoDTO cliente;
     private DestinatarioDTO destinatario;
     private BigDecimal taxaEntrega;
     private StatusEntregaEnum status;
     private OffsetDateTime dataPedido;
-    private OffsetDateTime dataFinalizacao;
 }

@@ -12,7 +12,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     List<Cliente> findByNome(String nome);
 
-    List<Cliente> findByNomeContaining(String nome); /* busca aproximada com Like %value% */
+    List<Cliente> findByNomeContaining(String nome); /* Containing: busca aproximada com Like %value% */
 
     @Override
     List<Cliente> findAll();

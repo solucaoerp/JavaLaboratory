@@ -1,4 +1,4 @@
-package com.ibrplanner.logistica.dtos;
+package com.ibrplanner.logistica.dtos.outputs;
 
 import lombok.Getter;
 import lombok.Setter;

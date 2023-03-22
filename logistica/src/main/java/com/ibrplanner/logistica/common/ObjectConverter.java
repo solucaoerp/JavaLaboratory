@@ -1,6 +1,7 @@
 package com.ibrplanner.logistica.common;
 
-import com.ibrplanner.logistica.dtos.EntregaDTO;
+import com.ibrplanner.logistica.dtos.inputs.EntregaInput;
+import com.ibrplanner.logistica.dtos.outputs.EntregaDTO;
 import com.ibrplanner.logistica.entities.Entrega;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,8 @@ import java.util.stream.Collectors;
 public class ObjectConverter {
 
     private static final ModelMapper modelMapper = new ModelMapper();
+
+    /* Métodos Genéricos de Conversão (para produção): Objeto e Lista */
 
     /**
      * Método genérico que realiza a conversão de um objeto de origem para um objeto de destino.
@@ -40,8 +43,25 @@ public class ObjectConverter {
         return entities.stream().map(entity -> modelMapper.map(entity, modelClass)).collect(Collectors.toList());
     }
 
-    /* Model para DTO (Test) */
-    public EntregaDTO toModel(Entrega entrega) {
+    /*
+        Métodos Explicitos de conversão (para compreensão)
+        Entidade(input) -> dto(output)
+     */
+    public static EntregaDTO toModel(Entrega entrega) {
         return modelMapper.map(entrega, EntregaDTO.class);
+    }
+
+    public static List<EntregaDTO> toCollectionModel(List<Entrega> entregas) {
+        return entregas.stream()
+                .map(ObjectConverter::toModel)
+                .collect(Collectors.toList());
+    }
+
+    /*
+        Métodos Explicitos de conversão (para compreensão)
+        dto(input) -> output(Entidade)
+     */
+    public static Entrega toEntity(EntregaInput entregaInput) {
+        return modelMapper.map(entregaInput, Entrega.class);
     }
 }

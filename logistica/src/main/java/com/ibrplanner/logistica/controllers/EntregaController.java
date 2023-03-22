@@ -1,6 +1,9 @@
 package com.ibrplanner.logistica.controllers;
 
-import com.ibrplanner.logistica.dtos.EntregaDTO;
+import com.ibrplanner.logistica.common.ObjectConverter;
+import com.ibrplanner.logistica.dtos.inputs.EntregaInput;
+import com.ibrplanner.logistica.dtos.outputs.EntregaDTO;
+import com.ibrplanner.logistica.entities.Entrega;
 import com.ibrplanner.logistica.services.EntregaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +30,19 @@ public class EntregaController {
         return entregaDTO != null ? ResponseEntity.ok(entregaDTO) : ResponseEntity.notFound().build();
     }
 
-    @PostMapping
+    @PostMapping(value = "/save")
     @ResponseStatus(HttpStatus.CREATED)
     public EntregaDTO salvar(@RequestBody @Valid EntregaDTO entregaDTO) {
         return entregaService.salvar(entregaDTO);
     }
+
+    @PostMapping(value = "/solicitar")
+    @ResponseStatus(HttpStatus.CREATED)
+    public EntregaDTO solicitar(@RequestBody @Valid EntregaInput entregaInput) {
+        Entrega novaEntrega = ObjectConverter.toEntity(entregaInput);
+        Entrega entregaSolicitada = entregaService.solicitar(novaEntrega);
+
+        return ObjectConverter.toModel(entregaSolicitada);
+    }
+
 }
