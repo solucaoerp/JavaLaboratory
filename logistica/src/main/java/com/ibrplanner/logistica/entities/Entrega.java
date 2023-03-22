@@ -1,5 +1,6 @@
 package com.ibrplanner.logistica.entities;
 
+import com.ibrplanner.logistica.exceptions.exceptionService.ExceptionService;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -39,5 +40,21 @@ public class Entrega {
 
         this.getOcorrencias().add(ocorrencia);
         return ocorrencia;
+    }
+
+    public void finalizar() {
+        if (naoPodeSerFinalizada()) {
+            throw new ExceptionService("Entrega não pode ser finalizada.");
+        }
+        setStatus(StatusEntregaEnum.FINALIZADA);
+        setDataFinalizacao(OffsetDateTime.now());
+    }
+
+    public boolean podeSerFinalizada() {
+        return StatusEntregaEnum.PENDENTE.equals(getStatus());
+    }
+
+    public boolean naoPodeSerFinalizada() {
+        return !podeSerFinalizada();
     }
 }

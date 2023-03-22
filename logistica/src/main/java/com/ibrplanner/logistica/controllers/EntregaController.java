@@ -5,6 +5,7 @@ import com.ibrplanner.logistica.dtos.EntregaDTO;
 import com.ibrplanner.logistica.dtos.EntregaInput;
 import com.ibrplanner.logistica.entities.Entrega;
 import com.ibrplanner.logistica.services.EntregaService;
+import com.ibrplanner.logistica.services.FinalizacaoEntregaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,8 @@ import java.util.List;
 public class EntregaController {
     @Autowired
     private EntregaService entregaService;
+    @Autowired
+    private FinalizacaoEntregaService finalizacaoEntregaService;
 
     @GetMapping
     public List<EntregaDTO> listarTodos() {
@@ -43,6 +46,11 @@ public class EntregaController {
         Entrega entregaSolicitada = entregaService.solicitar(novaEntrega);
 
         return ObjectConverter.toModel(entregaSolicitada);
+    }
+    @PutMapping(value = "/{entregaId}/finalizacao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void finalizar(@PathVariable Long entregaId){
+        finalizacaoEntregaService.finalizar(entregaId);
     }
 
 }

@@ -7,6 +7,7 @@ import com.ibrplanner.logistica.entities.Cliente;
 import com.ibrplanner.logistica.entities.Destinatario;
 import com.ibrplanner.logistica.entities.Entrega;
 import com.ibrplanner.logistica.entities.StatusEntregaEnum;
+import com.ibrplanner.logistica.exceptions.exceptionService.EntidadeNaoEncontradaException;
 import com.ibrplanner.logistica.exceptions.exceptionService.ExceptionService;
 import com.ibrplanner.logistica.repositories.ClienteRepository;
 import com.ibrplanner.logistica.repositories.EntregaRepository;
@@ -37,6 +38,11 @@ public class EntregaService {
     public EntregaDTO buscarPorId(Long id) {
         Optional<Entrega> entrega = entregaRepository.findById(id);
         return entrega.map(this::toEntregaDTO).orElse(null);
+    }
+
+    public Entrega buscar(Long entregaId) {
+        return entregaRepository.findById(entregaId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Entrega não encontrada."));
     }
 
     @Transactional
