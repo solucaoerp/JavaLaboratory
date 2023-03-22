@@ -1,8 +1,8 @@
 package com.ibrplanner.logistica.controllers;
 
 import com.ibrplanner.logistica.common.ObjectConverter;
-import com.ibrplanner.logistica.dtos.inputs.EntregaInput;
-import com.ibrplanner.logistica.dtos.outputs.EntregaDTO;
+import com.ibrplanner.logistica.dtos.EntregaDTO;
+import com.ibrplanner.logistica.dtos.EntregaInput;
 import com.ibrplanner.logistica.entities.Entrega;
 import com.ibrplanner.logistica.services.EntregaService;
 import jakarta.validation.Valid;

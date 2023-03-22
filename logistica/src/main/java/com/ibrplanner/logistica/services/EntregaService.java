@@ -1,8 +1,8 @@
 package com.ibrplanner.logistica.services;
 
 import com.ibrplanner.logistica.common.ObjectConverter;
-import com.ibrplanner.logistica.dtos.outputs.DestinatarioDTO;
-import com.ibrplanner.logistica.dtos.outputs.EntregaDTO;
+import com.ibrplanner.logistica.dtos.DestinatarioDTO;
+import com.ibrplanner.logistica.dtos.EntregaDTO;
 import com.ibrplanner.logistica.entities.Cliente;
 import com.ibrplanner.logistica.entities.Destinatario;
 import com.ibrplanner.logistica.entities.Entrega;
@@ -59,7 +59,7 @@ public class EntregaService {
         entrega.setCliente(cliente);
         entrega.setStatus(StatusEntregaEnum.PENDENTE);
         entrega.setDataPedido(OffsetDateTime.now());
-        return  entregaRepository.save(entrega);
+        return entregaRepository.save(entrega);
     }
 
     private Entrega toEntrega(EntregaDTO entregaDTO, Cliente cliente) {

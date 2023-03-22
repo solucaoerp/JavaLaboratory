@@ -1,4 +1,4 @@
-package com.ibrplanner.logistica.dtos.outputs;
+package com.ibrplanner.logistica.dtos;
 
 import com.ibrplanner.logistica.entities.StatusEntregaEnum;
 import lombok.Getter;

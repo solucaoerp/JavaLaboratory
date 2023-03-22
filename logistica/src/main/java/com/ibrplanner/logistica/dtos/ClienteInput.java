@@ -1,4 +1,4 @@
-package com.ibrplanner.logistica.dtos.inputs;
+package com.ibrplanner.logistica.dtos;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

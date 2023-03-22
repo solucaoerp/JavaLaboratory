@@ -1,5 +1,6 @@
 package com.ibrplanner.logistica.exceptions.exceptionHandler;
 
+import com.ibrplanner.logistica.exceptions.exceptionService.EntidadeNaoEncontradaException;
 import com.ibrplanner.logistica.exceptions.exceptionService.ExceptionService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -56,6 +57,19 @@ public class RestValidationExceptionHandler extends ResponseEntityExceptionHandl
     public ResponseEntity<Object> handleNegocioService(ExceptionService ex, WebRequest request) {
 
         HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        ApiValidationResponseError error = new ApiValidationResponseError();
+        error.setStatus(status.value());
+        error.setDataHora(OffsetDateTime.now());
+        error.setTitulo(ex.getMessage());
+
+        return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public ResponseEntity<Object> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException ex, WebRequest request) {
+
+        HttpStatus status = HttpStatus.NOT_FOUND;
 
         ApiValidationResponseError error = new ApiValidationResponseError();
         error.setStatus(status.value());
