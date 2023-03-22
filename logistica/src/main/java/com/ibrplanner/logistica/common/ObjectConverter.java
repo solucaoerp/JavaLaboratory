@@ -1,6 +1,9 @@
 package com.ibrplanner.logistica.common;
 
+import com.ibrplanner.logistica.dtos.EntregaDTO;
+import com.ibrplanner.logistica.entities.Entrega;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,6 +11,7 @@ import java.util.stream.Collectors;
 /**
  * Classe utilitária para conversão de objetos.
  */
+@Component
 public class ObjectConverter {
 
     private static final ModelMapper modelMapper = new ModelMapper();
@@ -26,17 +30,18 @@ public class ObjectConverter {
     }
 
     /**
-     * Método genérico que realiza a conversão de uma lista de objetos de origem para uma lista de objetos de destino.
+     * Converte uma lista de entidades para uma lista de modelos usando o ModelMapper.
      *
-     * @param entities    a lista de objetos de origem que será convertida.
-     * @param modelClass  a classe do objeto de destino para o qual os objetos de origem serão convertidos.
-     * @param modelMapper o objeto do ModelMapper que será utilizado para realizar a conversão.
-     * @param <T>         o tipo dos objetos de origem.
-     * @param <R>         o tipo dos objetos de destino.
-     * @return a lista de objetos de destino convertida.
+     * @param entities   a lista de entidades a ser convertida
+     * @param modelClass a classe do modelo de destino
+     * @return a lista de modelos convertida
      */
-    public static <T, R> List<R> toListModel(List<T> entities, Class<R> modelClass, ModelMapper modelMapper) {
+    public static <T, R> List<R> toListModel(List<T> entities, Class<R> modelClass) {
         return entities.stream().map(entity -> modelMapper.map(entity, modelClass)).collect(Collectors.toList());
     }
 
+    /* Model para DTO (Test) */
+    public EntregaDTO toModel(Entrega entrega) {
+        return modelMapper.map(entrega, EntregaDTO.class);
+    }
 }

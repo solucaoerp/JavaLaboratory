@@ -10,7 +10,6 @@ import com.ibrplanner.logistica.entities.StatusEntregaEnum;
 import com.ibrplanner.logistica.exceptions.exceptionService.ExceptionService;
 import com.ibrplanner.logistica.repositories.ClienteRepository;
 import com.ibrplanner.logistica.repositories.EntregaRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +28,9 @@ public class EntregaService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     public List<EntregaDTO> listarTodos() {
-        List<Entrega> entregases = entregaRepository.findAll();
-        return toListEntregaDTO(entregases);
+        List<Entrega> entregas = entregaRepository.findAll();
+        return toListEntregaDTO(entregas);
     }
 
     public EntregaDTO buscarPorId(Long id) {
@@ -72,7 +68,8 @@ public class EntregaService {
         return ObjectConverter.toModel(destinatario, DestinatarioDTO.class);
     }
 
-    private List<EntregaDTO> toListEntregaDTO(List<Entrega> entregases) {
-        return ObjectConverter.toListModel(entregases, EntregaDTO.class, modelMapper);
+    private List<EntregaDTO> toListEntregaDTO(List<Entrega> entregas) {
+        return ObjectConverter.toListModel(entregas, EntregaDTO.class);
     }
+
 }
