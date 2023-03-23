@@ -1,13 +1,8 @@
 package com.ibrplanner.pedidos.services;
 
-import com.ibrplanner.pedidos.domain.ItemPedido;
-import com.ibrplanner.pedidos.domain.PagamentoComBoleto;
-import com.ibrplanner.pedidos.domain.Pedido;
+import com.ibrplanner.pedidos.domain.*;
 import com.ibrplanner.pedidos.enums.EstadoPagamento;
-import com.ibrplanner.pedidos.repositories.ItemPedidoRepository;
-import com.ibrplanner.pedidos.repositories.PagamentoRepository;
-import com.ibrplanner.pedidos.repositories.PedidoRepository;
-import com.ibrplanner.pedidos.repositories.ProdutoRepository;
+import com.ibrplanner.pedidos.repositories.*;
 import com.ibrplanner.pedidos.services.exeptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +28,9 @@ public class PedidoService {
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
 
+    @Autowired
+    private ClienteRepository clienteRepository;
+
     public Pedido findById(Long id) {
         Optional<Pedido> obj = repo.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrato! Id: " + id + ", Tipo: " + Pedido.class.getName()));
@@ -42,6 +40,13 @@ public class PedidoService {
     public Pedido insert(Pedido obj) {
         obj.setId(null);
         obj.setInstante(new Date());
+
+        // Verifica se o Cliente existe e retorna
+        Cliente cliente = clienteRepository.findById(obj.getCliente().getId())
+                .orElseThrow(() -> new RuntimeException("Não foi possível encontrar o cliente com o ID "));
+
+        obj.setCliente(cliente);
+
         obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
         obj.getPagamento().setPedido(obj);
 
@@ -53,10 +58,22 @@ public class PedidoService {
         pagamentoRepository.save(obj.getPagamento());
         for (ItemPedido ip : obj.getItens()) {
             ip.setDesconto(0.0);
-            ip.setPreco(produtoRepository.findById(ip.getProduto().getId()).get().getPreco());
+
+            // Verifica se o Produto existe e retorna
+            Optional<Produto> produtoOptional = produtoRepository.findById(ip.getProduto().getId());
+
+            if (produtoOptional.isPresent()) {
+                Produto produto = produtoOptional.get();
+                ip.setProduto(produto);
+                ip.setPreco(produto.getPreco());
+                ip.setPedido(obj);
+            } else {
+                throw new RuntimeException("Não foi possível encontrar o produto com o ID " + ip.getProduto().getId());
+            }
             ip.setPedido(obj);
         }
         itemPedidoRepository.saveAll(obj.getItens());
+        System.out.println(obj);
         return obj;
     }
 
