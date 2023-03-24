@@ -1,6 +1,8 @@
 package com.ibrplanner.pedidos.config;
 
 import com.ibrplanner.pedidos.services.DBServiceTest;
+import com.ibrplanner.pedidos.services.EmailService;
+import com.ibrplanner.pedidos.services.MockEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,4 +22,10 @@ public class ProfileTestConfig {
         dbServiceTest.instantiateTestDatabase();
         return true;
     }
+
+    @Bean
+    public EmailService emailService() {
+        return new MockEmailService();
+    }
+
 }
