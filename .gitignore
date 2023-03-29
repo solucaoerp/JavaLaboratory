@@ -31,6 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+*.code-workspace
 
 # Logs
 logs
@@ -60,3 +61,18 @@ dist-ssr
 ### Maven Wrapper ###
 .mvn
 
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# React
+build/
+dist/
+
+# TypeScript
+*.tsbuildinfo
+
+# Outros arquivos que podem ser ignorados
+.DS_Store
+Thumbs.db
