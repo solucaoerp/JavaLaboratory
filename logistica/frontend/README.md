@@ -1,10 +1,15 @@
-# Introdução ao Create React App
+## Introdução ao Create React App
 
 Este projeto foi inicializado com [Create React App](https://github.com/facebook/create-react-app).
 
-# Instalação
+## Instalação
 
 ### `npm install` ou `yarn install`
+
+```javascript
+npm install ou yarn install
+```
+
 
 Instala as dependências do projeto listadas no arquivo package.json.
 
