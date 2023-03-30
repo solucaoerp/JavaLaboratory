@@ -4,16 +4,15 @@ Este projeto foi inicializado com [Create React App](https://github.com/facebook
 
 ## Instalação
 
-### `npm install` ou `yarn install`
-
 ```javascript
 npm install ou yarn install
 ```
 
-
 Instala as dependências do projeto listadas no arquivo package.json.
 
-### `npm update` ou `yarn update`
+```javascript
+npm update ou yarn update
+```
 
 Atualiza as dependências do projeto para as versões mais recentes compatíveis.
 
@@ -21,7 +20,9 @@ Atualiza as dependências do projeto para as versões mais recentes compatíveis
 
 No diretório do projeto, você pode executar:
 
-### `npm start` ou `yarn start`
+```javascript
+npm start ou yarn start
+```
 
 Executa o aplicativo no modo de desenvolvimento.\
 Abra [http://localhost:3000](http://localhost:3000) para visualizá-lo no navegador.
