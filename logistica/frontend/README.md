@@ -1,46 +1,53 @@
-# Getting Started with Create React App
+# Introdução ao Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este projeto foi inicializado com [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# Instalação
 
-In the project directory, you can run:
+### `npm install` ou `yarn install`
 
-### `npm start`
+Instala as dependências do projeto listadas no arquivo package.json.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### `npm update` ou `yarn update`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Atualiza as dependências do projeto para as versões mais recentes compatíveis.
 
-### `npm test`
+## Scripts disponíveis
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+No diretório do projeto, você pode executar:
 
-### `npm run build`
+### `npm start` ou `yarn start`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Executa o aplicativo no modo de desenvolvimento.\
+Abra [http://localhost:3000](http://localhost:3000) para visualizá-lo no navegador.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+A página será recarregada se você fizer edições.\
+Você também verá quaisquer erros de lint no console.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `npm run build` ou `yarn build`
 
-### `npm run eject`
+Cria o aplicativo para produção na pasta `build`.\
+Ele empacota corretamente o React no modo de produção e otimiza a compilação para obter o melhor desempenho.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+A compilação é minificada e os nomes dos arquivos incluem os hashes.\
+Seu aplicativo está pronto para ser implantado!
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Consulte a seção sobre [implantação](https://facebook.github.io/create-react-app/docs/deployment) para obter mais informações.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### `npm audit` ou `yarn audit`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Verifica se há vulnerabilidades em pacotes do projeto e apresenta informações sobre como corrigi-las.
 
-## Learn More
+### `npm run lint` ou `yarn lint`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Executa ferramentas de linting (análise estática de código) para verificar se o código segue as convenções de estilo e boas práticas definidas.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### `npm run format` ou `yarn format`
+
+Executa ferramentas de formatação de código para manter uma formatação consistente em todo o projeto.
+
+## Saiba mais em
+
+Você pode aprender mais na [documentação do Create React App](https://facebook.github.io/create-react-app/docs/getting-started).
+
+Para aprender React, confira a [documentação do React](https://reactjs.org/).
