@@ -12,13 +12,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/clientes")
+@CrossOrigin("*")
 public class ClienteController {
     @Autowired
     private ClienteService service;
-
     @GetMapping
-    private List<?> findAll() {
-        return service.findAll();
+    public List<?> findAll() {
+        List<?> clientes = service.findAll();
+        return clientes;
     }
 
     @GetMapping(value = "/{id}")

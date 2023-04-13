@@ -24,7 +24,7 @@ public class Cliente {
     @Size(min = 5, max = 60)
     private String nome;
     @NotBlank
-    @Size(min = 11, max = 11)
+    @Size(min = 10, max = 11)
     private String telefone;
     @NotBlank
     @Email
