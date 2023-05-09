@@ -1,7 +1,6 @@
 package com.ibrplanner.dslist.controllers;
 
 import com.ibrplanner.dslist.dtos.GameDTO;
-import com.ibrplanner.dslist.entities.Game;
 import com.ibrplanner.dslist.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
