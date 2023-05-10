@@ -1,6 +1,7 @@
 package com.ibrplanner.dslist.dtos;
 
 import com.ibrplanner.dslist.entities.Game;
+import com.ibrplanner.dslist.projections.GameMinProjection;
 
 public class GameDTO {
     private Long id;
@@ -18,6 +19,14 @@ public class GameDTO {
         year = entity.getYear();
         imgUrl = entity.getImgUrl();
         shortDescription = entity.getShortDescription();
+    }
+
+    public GameDTO(GameMinProjection projection) {
+        id = projection.getId();
+        title = projection.getTitle();
+        year = projection.getYear();
+        imgUrl = projection.getImgUrl();
+        shortDescription = projection.getShortDescription();
     }
 
     public Long getId() {
