@@ -48,3 +48,77 @@ networks:
 ```
 
 Finalmente, a seção `networks` define as redes a serem usadas pelos contêineres. Aqui está definido uma rede chamada `dev-network` que usa o driver `bridge`, que é o driver de rede padrão do `Docker`. Uma rede do tipo bridge permite que os contêineres conectados a ela se comuniquem entre si, enquanto os isola dos contêineres que não estão conectados à mesma rede.
+
+# Passos para Backup do Banco de Dados do Container Docker para o Diretório Local
+
+Passos para fazer o backup legível do banco de dados do ambiente Docker:
+
+Passo 1: Acesse o terminal do contêiner PostgreSQL. Abra o terminal ou prompt de comando no seu sistema operacional.
+
+Passo 2: Use o comando `docker exec` para executar o comando `pg_dump` dentro do contêiner, e criar o backup do banco de dados em um formato legível (formato ANSI/SQL). Exemplo:
+
+```shell
+docker exec <container_name> pg_dump -U <user-db> -d <nome_do_banco> --format=plain --file=/DiretorioDockerDB/Database.sql
+```
+
+ou, caso precise passar a 'senha', acrescente o '-W' no final...
+
+```shell
+docker exec -it <container_name> pg_dump -U <user-db> -d <nome_do_banco> --format=plain --file=/DiretorioDockerDB/Database.sql -W
+
+```
+
+O comando acima irá criar um arquivo de backup chamado `Database.sql` dentro do contêiner no formato SQL legível.
+
+Passo 3: Use o comando `docker cp` para copiar o arquivo de backup do contêiner para o diretório local. Exemplo:
+
+```shell
+docker cp <container_name>:/DiretorioDockerDB/Database.sql /caminho/local/para/o/Database.sql
+```
+
+Após executar esse comando, o arquivo de backup será copiado do contêiner para o diretório local especificado.
+
+Com esses passos, você poderá fazer o backup legível do banco de dados do ambiente Docker e salvá-lo em um arquivo SQL no diretório local.
+
+# Passos para Restauração do Banco de Dados no Container Docker a partir do Diretório Local
+
+Passos para restaurar o banco de dados a partir do arquivo de backup.
+
+Passo 1: Crie o banco de dados no contêiner Docker. Execute o seguinte comando para criar o banco de dados no contêiner:
+
+```shell
+docker exec -it <container_name> psql -U <usuario-db> -c "CREATE DATABASE <nome_do_banco>;"
+```
+
+Passo 2: Copie o arquivo de backup local para o contêiner PostgreSQL usando o comando `docker cp`. Por exemplo:
+
+```shell
+docker cp C:/DiretorioLocalDB/Database.sql <container_name>:/DiretorioDockerDB/Database.sql
+```
+
+Certifique-se de fornecer o caminho correto para o arquivo de backup em seu sistema local.
+
+Passo 3: Acesse o terminal do contêiner PostgreSQL com o seguinte comando:
+
+```shell
+docker exec -it <container_name> psql -U <usuario-db> -d <nome_do_banco>
+```
+
+ou, caso precise passar a 'senha', acrescente o '-W' no final...
+
+```shell
+docker exec -it <container_name> psql -U <nome_do_usuario> -d <nome_do_banco> -W
+
+```
+
+Passo 4: Restaure o banco de dados a partir do arquivo de backup. Dentro do prompt interativo do PostgreSQL no contêiner, execute o seguinte comando para restaurar o banco de dados a partir do arquivo de backup:
+
+```shell
+\i /DiretorioDockerDB/Database.sql
+```
+
+Isso executará o script SQL contido no arquivo `Database.sql` e restaurará o banco de dados no contêiner.
+
+Lembre-se de ajustar os caminhos e nomes de arquivos de acordo com a localização do seu arquivo de backup e o nome do seu contêiner PostgreSQL, se necessário.
+
+Após a execução desses passos, o banco de dados será criado (se necessário) e o esquema e os dados das tabelas serão restaurados no contêiner Docker.
