@@ -1,6 +1,7 @@
 package org.ibrplanner;
 
 import org.ibrplanner.db.DB;
+import org.ibrplanner.domain.Product;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -17,9 +18,20 @@ public class Main {
         ResultSet rs = st.executeQuery("select * from tb_product");
 
         while (rs.next()) {
-            System.out.println("Id: " + rs.getLong("Id") + ", " + "Name: " +
-                    rs.getString("Name") + ", " + "Price: " + rs.getDouble("Price") + ", " +
-                    "Image Url: " + rs.getString("Image_uri"));
+            Product p = instantiateProduct(rs);
+            System.out.println(p.toString());
         }
+    }
+
+    private static Product instantiateProduct(ResultSet rs) throws SQLException {
+        Product p = new Product();
+
+        p.setId(rs.getLong("id"));
+        p.setName(rs.getString("name"));
+        p.setPrice(rs.getDouble("price"));
+        p.setDescription(rs.getString("description"));
+        p.setImageUri(rs.getString("image_uri"));
+
+        return p;
     }
 }
