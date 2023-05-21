@@ -1,6 +1,8 @@
 package org.ibrplanner;
 
 import org.ibrplanner.db.DB;
+import org.ibrplanner.domain.Order;
+import org.ibrplanner.domain.OrderStatus;
 import org.ibrplanner.domain.Product;
 
 import java.sql.Connection;
@@ -15,11 +17,11 @@ public class Main {
 
         Statement st = conn.createStatement();
 
-        ResultSet rs = st.executeQuery("select * from tb_product");
+        ResultSet rs = st.executeQuery("select * from tb_order");
 
         while (rs.next()) {
-            Product p = instantiateProduct(rs);
-            System.out.println(p.toString());
+            Order order = instantiateOrder(rs);
+            System.out.println(order.toString());
         }
     }
 
@@ -33,5 +35,17 @@ public class Main {
         p.setImageUri(rs.getString("image_uri"));
 
         return p;
+    }
+
+    private static Order instantiateOrder(ResultSet rs) throws SQLException {
+        Order order = new Order();
+
+        order.setId(rs.getLong("id"));
+        order.setLatitude(rs.getDouble("latitude"));
+        order.setLongitude(rs.getDouble("longitude"));
+        order.setMoment(rs.getTimestamp("moment").toInstant());
+        order.setStatus(OrderStatus.values()[rs.getInt("status")]);
+
+        return order;
     }
 }
