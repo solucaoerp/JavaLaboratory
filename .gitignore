@@ -2,7 +2,6 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-docker/.data
 
 ### STS ###
 .apt_generated
@@ -77,3 +76,7 @@ dist/
 # Outros arquivos que podem ser ignorados
 .DS_Store
 Thumbs.db
+
+### STS ###
+docker/.data
+docker/docker-mysql/mysql_data
