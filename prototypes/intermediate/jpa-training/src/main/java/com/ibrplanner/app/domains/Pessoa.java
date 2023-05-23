@@ -1,4 +1,4 @@
-package org.ibrplanner.domains;
+package com.ibrplanner.app.domains;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -45,10 +45,6 @@ public class Pessoa implements Serializable {
 
     @Override
     public String toString() {
-        return "Pessoa[" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", email='" + email + '\'' +
-                ']';
+        return "Pessoa{" + "id=" + id + ", nome='" + nome + '\'' + ", email='" + email + '\'' + '}';
     }
 }
