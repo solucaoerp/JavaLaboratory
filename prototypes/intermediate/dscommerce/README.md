@@ -1,21 +1,25 @@
-# DSCommerce
+<div align="center">
+  <h1>DSCommerce</h1>
+  <img src="https://github.com/solucaoerp/JavaLaboratory/blob/main/prototypes/intermediate/dscommerce/assets/image/icon48_java.png" alt="Java">
+  <img src="https://github.com/solucaoerp/JavaLaboratory/blob/main/prototypes/intermediate/dscommerce/assets/image/icon48_spring.png" alt="Spring">
+  <img src="https://github.com/solucaoerp/JavaLaboratory/blob/main/prototypes/intermediate/dscommerce/assets/image/icon48_h2database.png" alt="H2Database">
+</div>
 
-![Banner](https://github.com/seu-nome/DSCommerce/blob/main/img/banner.png)
 
 DSCommerce é um sistema de comércio eletrônico desenvolvido em Java utilizando o framework `Spring Boot (v3.1.0)` com banco de dados `H2 (v2.1.214)`.
 
+
 ## Índice
 
-- [DSCommerce](#dscommerce)
-  - [Índice](#índice)
-  - [Visão Geral ](#visão-geral-)
-  - [Diagrama de Classes ](#diagrama-de-classes-)
-  - [Tecnologias ](#tecnologias-)
-  - [Recursos ](#recursos-)
-  - [Instalação ](#instalação-)
-  - [Uso ](#uso-)
-  - [Licença ](#licença-)
-  - [Contato ](#contato-)
+- [Índice](#índice)
+- [Visão Geral ](#visão-geral-)
+- [Diagrama de Classes ](#diagrama-de-classes-)
+- [Tecnologias ](#tecnologias-)
+- [Recursos ](#recursos-)
+- [Instalação ](#instalação-)
+- [Uso ](#uso-)
+- [Licença ](#licença-)
+- [Contato ](#contato-)
 
 ## Visão Geral <a name = "visao-geral"></a>
 
@@ -44,7 +48,7 @@ Há duas categorias de usuários: clientes e administradores. Enquanto os client
 
 O diagrama de classes a seguir representa a estrutura do DSCommerce:
 
-![Diagrama de Classes](https://github.com/solucaoerp/JavaLaboratory/tree/main/prototypes/intermediate/dscommerce/assets/image/use-case-diagram.png)
+![Diagrama de Classes](https://github.com/solucaoerp/JavaLaboratory/blob/main/prototypes/intermediate/dscommerce/assets/image/use-case-diagram.png)
 
 Ele apresenta uma visão geral de como as classes estão organizadas e interagem entre si. Isso facilita a compreensão da estrutura do código.
 
