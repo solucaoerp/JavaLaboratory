@@ -83,8 +83,13 @@ Na classe `Order`, utilizamos a anotação `@ManyToOne` para indicar que muitos 
 ```java
 public class User {
     // ...
+    
+    @Column(unique = true)
+    private String email;
+
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
+    
     // ...
 }
 ```
@@ -119,6 +124,15 @@ Usamos a anotação **`@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 
 Isso é especialmente útil para aplicações que precisam lidar com usuários, transações ou eventos ocorrendo em diferentes fusos horários. Ao armazenar datas e horas em UTC, podemos facilmente converter para qualquer fuso horário local quando necessário, sem ter que se preocupar com inconsistências devido à armazenagem de datas/horas em diferentes fusos horários."
 
+**DICA!** Aqui cabe uma breve explicação sobre o campo `email` quanto à anotação `@Column(unique = true)`:
+
+O atributo **`@Column(unique = true)`** é uma anotação do JPA que define uma restrição de unicidade para a coluna de banco de dados correspondente. Isso significa que dois registros não podem ter o mesmo valor para esse campo. Ao definir `unique = true`, o JPA (Hibernate, por exemplo) criará uma restrição de unicidade para a coluna de email na tabela do banco de dados ao criar a estrutura da tabela.
+
+Se tentarmos inserir um usuário com um endereço de e-mail que já está presente na tabela, o banco de dados lançará uma exceção.
+
+Vale a pena notar que as restrições de unicidade são uma forma de regra de validação de negócios e é melhor aplicá-las no nível do banco de dados para garantir a integridade dos dados.
+
+
 ### Classe Order com Payment: 1:1 '0..1' (Um-para-Um)
 
 As classes `Order` e `Payment` representam uma relação um-para-um no modelo de domínio, e esta relação será mapeada no banco de dados através do JPA.
@@ -147,11 +161,12 @@ Na classe `Payment`, a propriedade `Order` também é anotada com `@OneToOne`, r
 
 ```java
 public class Payment {
-...
-@OneToOne
-@MapsId
-private Order order;
-...
+  //...
+  @OneToOne
+  @MapsId
+  private Order order;
+  //...
+}
 ```
 
 `@MapsId` é uma anotação importante aqui. Significa que queremos mapear o ID do `Payment` para ser o mesmo que o ID do `Order`. Isso é útil, por exemplo, para evitar a necessidade de gerar uma chave primária adicional para a tabela `Payment`. Com essa anotação, a tabela `Payment` usará a mesma chave primária da tabela `Order`.
@@ -160,6 +175,86 @@ Em resumo, cada `Order` pode ter zero ou um `Payment` e vice-versa, e a chave es
 
 Essa abordagem para mapear relações entre entidades é bastante comum em aplicações de banco de dados relacional e facilita a modelagem e a manipulação de relações complexas entre entidades.
 
+### Classe Product / Category /Product: M:M (Muitos-para-Muitos)
+
+Em um relacionamento de banco de dados, **muitos-para-muitos (M:M)** ocorre quando muitas instâncias de uma entidade estão associadas a muitas instâncias de outra entidade. No modelo proposto, um produto pode pertencer a várias categorias e uma categoria pode está associada a vários produtos.
+
+**Category**
+
+```java
+@Entity
+@Table(name = "tb_category")
+public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    @ManyToMany(mappedBy = "categories")
+    private Set<Product> products = new HashSet<>();    
+    //...
+}
+```
+
+**Product**
+
+```java
+@Entity
+@Table(name = "tb_product")
+public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    private Double price;
+    private String imgUrl;
+
+    @ManyToMany
+    @JoinTable(name = "tb_product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories = new HashSet<>();
+
+    //...
+}
+```
+
+Análise importante quanto a codificação da relação acima:
+
+1. **Tabela de Associação:** No modelo relacional de banco de dados, um relacionamento **M:M** entre duas tabelas é representado por uma tabela de associação (também chamada de tabela de junção). A tabela de associação `tb_product_category` é usada para resolver o relacionamento **M:M** entre `Product` e `Category`. Ela contém as chaves estrangeiras das tabelas `Product` e `Category`, chamadas `product_id` e `category_id` respectivamente. Cada linha nesta tabela associa um produto a uma categoria.
+
+A anotação `@JoinTable` é usada em um relacionamento de muitos-para-muitos para definir a tabela de junção (ou tabela de associação) e as chaves estrangeiras que compõem essa tabela. No modelo proposto, a tabela de junção é chamada de `tb_product_category`, que contém a associação entre produtos e categorias.
+
+Quanto as partes da anotação `@JoinTable`:
+
+1. **name:** o nome da tabela de junção.
+
+2. **joinColumns:** uma ou mais anotações `@JoinColumn`, cada uma delas referindo-se a uma coluna de chave estrangeira na tabela de junção que faz referência à tabela primária dessa entidade. Nesse modelo, a tabela primária é `Product` e a chave estrangeira na tabela de junção que faz referência a `Product` é `product_id`.
+
+3. **inverseJoinColumns:** uma ou mais anotações `@JoinColumn`, cada uma delas referindo-se a uma coluna de chave estrangeira na tabela de junção que faz referência à tabela primária da entidade no outro lado da relação. Nesse modelo, a entidade do outro lado é `Category` e a chave estrangeira na tabela de junção que faz referência a `Category` é `category_id`.
+
+Então, em termos simples, `joinColumns` refere-se à coluna na tabela de junção que conecta a entidade onde você está declarando a anotação `@JoinTable` (neste caso, `Product`), e `inverseJoinColumns` refere-se à coluna que conecta a entidade do outro lado da relação (neste caso, `Category`).
+
+4. **Uso de Set em vez de List:** O uso de `Set` para armazenar as associações em vez de uma `List`. A diferença principal entre `Set` e `List` é que `Set` não permite duplicatas enquanto `List` sim. Em um contexto de **M:M**, usar um `Set` faz sentido porque você não quer duplicatas na relação, ou seja, você não quer que um produto seja associado à mesma categoria mais de uma vez. 
+
+5. **Anotações `@ManyToMany` e `@JoinTable`:** Em `Product`, a anotação `@ManyToMany` é usada para indicar que é um relacionamento **M:M**. A anotação `@JoinTable` é usada para especificar a tabela de associação e as chaves estrangeiras que compõem a tabela de associação. Em `Category`, a anotação `@ManyToMany` é novamente usada para indicar que é um relacionamento **M:M**. No entanto, também é usado `mappedBy` para indicar que o mapeamento para esta relação já foi feito na entidade `Product`.
+
+6. **O que acontece neste tipo de relação:** Em uma relação **M:M**, quando você salva uma entidade, as associações também são salvas. Por exemplo, ao salvar um produto, também são salvas as categorias associadas a esse produto. Além disso, você pode navegar em ambas as direções. Você pode obter todas as categorias de um produto e todos os produtos de uma categoria.
+
+**DICA!** Aqui cabe uma observação importante quanto ao campo `description` da classe `Product`:
+
+Já sabemos qeu a anotação `@Column` é usada para especificar detalhes sobre a coluna para a propriedade ou campo persistente ao qual está aplicada. A anotação pode ser usada para todos os tipos de campos persistentes, sejam eles primitivos, wrappers, `String`, outros objetos ou coleções.
+
+No exemplo proposto, `@Column(columnDefinition = "TEXT")` está definindo como a coluna será criada na base de dados. O valor `TEXT` dentro de `columnDefinition` é uma instrução específica para o sistema de gerenciamento de banco de dados sobre como criar essa coluna.
+
+- `columnDefinition`: Essa opção permite a definição direta da DDL (Data Definition Language) para esta coluna no banco de dados. 
+
+Quando o Hibernate (ou outro provedor JPA) cria as tabelas do banco de dados, ele usará o valor de `columnDefinition` para criar a coluna `description`. Nesse caso específico, a coluna `description` será criada como uma coluna `TEXT`. O tipo `TEXT` é um tipo de dado de string SQL que pode armazenar grandes quantidades de texto. O tamanho exato que um `TEXT` pode armazenar varia de um sistema de gerenciamento de banco de dados para outro, mas geralmente é considerado suficiente para armazenar texto de qualquer tamanho razoável.
 
 ## Tecnologias <a name="tecnologias"></a>
 
