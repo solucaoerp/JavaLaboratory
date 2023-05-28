@@ -11,17 +11,19 @@ DSCommerce é um sistema de comércio eletrônico desenvolvido em Java utilizand
 
 ## Índice
 
-- [Índice](#índice)
-- [Visão Geral ](#visão-geral-)
-- [Diagrama de Classes ](#diagrama-de-classes-)
-- [Tecnologias ](#tecnologias-)
-- [Recursos ](#recursos-)
-- [Instalação ](#instalação-)
-- [Uso ](#uso-)
-- [Licença ](#licença-)
-- [Contato ](#contato-)
+- [Índice](#indice)
+- [Visão Geral](#visao-geral)
+- [Diagrama de Classes](#diagrama-de-classes)
+- [Mapeamento de Entidades e Relacionamentos](#mapeamento-entidades)
+- [Tecnologias](#tecnologias)
+- [Recursos](#recursos)
+- [Instalação](#instalacao)
+- [Uso](#uso)
+- [Licença](#licenca)
+- [Contato](#contato)
 
-## Visão Geral <a name = "visao-geral"></a>
+
+## Visão Geral <a name="visao-geral"></a>
 
 DSCommerce é um sistema de comércio eletrônico. Ele é capaz de manter um catálogo de produtos categorizados que os usuários podem navegar, selecionar produtos para visualizar detalhes e adicioná-los a um carrinho de compras.
 
@@ -44,7 +46,7 @@ Os pedidos feitos pelos usuários são salvos no sistema com um status "aguardan
 
 Há duas categorias de usuários: clientes e administradores. Enquanto os clientes podem atualizar seu cadastro, fazer pedidos e visualizar seus pedidos, os administradores têm acesso à área administrativa, onde podem acessar todos os cadastros de usuários, produtos e categorias.
 
-## Diagrama de Classes <a name = "diagrama-classes"></a>
+## Diagrama de Classes <a name="diagrama-de-classes"></a>
 
 O diagrama de classes a seguir representa a estrutura do DSCommerce:
 
@@ -52,13 +54,79 @@ O diagrama de classes a seguir representa a estrutura do DSCommerce:
 
 Ele apresenta uma visão geral de como as classes estão organizadas e interagem entre si. Isso facilita a compreensão da estrutura do código.
 
-## Tecnologias <a name = "tecnologias"></a>
+
+## Mapeamento de Entidades e Relacionamentos <a name="mapeamento-entidades"></a>
+
+Um aspecto importante de qualquer aplicação que interage com um banco de dados é como ela mapeia e gerencia as relações entre suas entidades. No DSCommerce, as entidades `User` e `Order` possuem uma relação bidirecional: um usuário pode ter muitos pedidos e um pedido pertence a um único usuário.
+
+No código, usamos as anotações `@ManyToOne` e `@OneToMany` do Spring Data JPA para gerenciar essas relações. Veja como elas são usadas nas classes `Order` e `User`:
+
+### Classe Order
+
+```java
+public class Order {
+    // ...
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private User client;
+    // ...
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant moment;
+    // ...
+}
+```
+
+Na classe `Order`, utilizamos a anotação `@ManyToOne` para indicar que muitos pedidos podem pertencer a um único usuário. O `@JoinColumn` é usado para definir a coluna que fará a ligação entre as tabelas `Order` e `User` no banco de dados.
+
+### Classe User
+
+```java
+public class User {
+    // ...
+    @OneToMany(mappedBy = "client")
+    private List<Order> orders = new ArrayList<>();
+    // ...
+}
+```
+
+Na classe `User`, utilizamos a anotação `@OneToMany` para indicar que um único usuário pode ter muitos pedidos. O parâmetro `mappedBy = "client"` indica que essa relação é mapeada pelo campo `client` na classe `Order`.
+
+Essas anotações permitem ao Spring Data JPA gerenciar automaticamente a persistência e a recuperação dessas entidades e suas relações a partir do banco de dados.
+
+1. No lado "muitos-para-um" (`@ManyToOne`), a anotação `@JoinColumn(name = "client_id")` define que "client_id" é a chave estrangeira que conecta a entidade `Order` à entidade `User`. Nesse caso, o campo "client_id" na tabela `Order` irá armazenar o identificador do `User` que é o cliente associado a esse `Order`.
+
+2. No lado "um-para-muitos" (`@OneToMany`), a propriedade `orders` na classe `User` é uma lista porque um `User` pode ter muitos `Order`s. A lista é normalmente inicializada no ponto de declaração para evitar um `NullPointerException` caso você tente acessar os `Order`s de um `User` que não tem nenhum. A inicialização da lista aqui é uma boa prática para garantir que a lista de `Order`s nunca seja nula, ela será apenas vazia se o `User` não tiver nenhum `Order`.
+
+No relacionamento bidirecional entre `User` e `Order`, a propriedade `mappedBy` é usada para indicar o campo na classe `Order` que está mantendo o relacionamento. Neste caso, `mappedBy = "client"` indica que o campo `client` na classe `Order` é o responsável pelo mapeamento do relacionamento entre `Order` e `User`.
+
+Isso significa que o lado `Order` do relacionamento é o lado dominante - ele é o que define como o relacionamento será mantido no banco de dados. O lado `User`, com a anotação `mappedBy`, é o lado passivo - ele recebe a definição de como o relacionamento é mantido a partir do lado `Order`.
+
+Essa abordagem evita a redundância e a inconsistência ao gerenciar relacionamentos bidirecionais em JPA. Se ambos os lados tentassem controlar o relacionamento, você poderia acabar com duas versões diferentes de como o relacionamento deve ser mapeado, o que causaria problemas. Ao fazer um lado dominante e o outro passivo, você garante que há uma única fonte de verdade para como o relacionamento deve ser gerenciado.
+
+Na classe `User`, o `mappedBy = "client"` refere-se ao nome do atributo na classe `Order` que representa o `User` na relação.
+
+Neste caso, o `client` é o campo na classe `Order` que mantém a referência ao `User` que fez o pedido. Ao usar `mappedBy`, estamos indicando que a propriedade `client` na classe `Order` é responsável pelo mapeamento do relacionamento.
+
+Isso é necessário porque o relacionamento é bidirecional - ou seja, a `Order` tem uma referência ao `User` que fez o pedido (através do campo `client`), e o `User` tem uma lista de `Order` que ele fez (através do campo `orders`). Usando `mappedBy`, podemos vincular esses dois lados do relacionamento juntos.
+
+Por fim, cabe uma **OBSERVAÇÃO IMPORTANTE** quanto ao campo **`Instant`** em `Order`.
+
+**Boa prática!** Usar o tipo `Instant` é uma ótima maneira de lidar com data e hora em um **formato universal (UTC)**, independentemente do fuso horário.
+
+Repare que o campo (**propriedade**) **`moment`** da classe **`Order`** é do tipo **`Instant`**, que é uma representação de um ponto específico na linha do tempo. `Instant` **é sempre armazenado no formato UTC**, que é um **padrão internacional e independente do fuso horário**. Isso torna o `Instant` muito útil para armazenar datas e horas em um formato universal, sem ambiguidade.
+
+Usamos a anotação **`@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")`** para instruir o Hibernate (a implementação JPA que estamos usando) a mapear o campo `Instant` para uma coluna de banco de dados do tipo `TIMESTAMP WITHOUT TIME ZONE`. Isso garante que a informação de data e hora seja armazenada no banco de dados em um formato padrão UTC, independente do fuso horário.
+
+Isso é especialmente útil para aplicações que precisam lidar com usuários, transações ou eventos ocorrendo em diferentes fusos horários. Ao armazenar datas e horas em UTC, podemos facilmente converter para qualquer fuso horário local quando necessário, sem ter que se preocupar com inconsistências devido à armazenagem de datas/horas em diferentes fusos horários."
+
+
+## Tecnologias <a name="tecnologias"></a>
 
 - [Java](https://www.oracle.com/br/java/)
 - [Spring Boot v3.1.0](https://spring.io/projects/spring-boot)
 - [H2 Database v2.1.214](https://www.h2database.com/)
 
-## Recursos <a name = "recursos"></a>
+## Recursos <a name="recursos"></a>
 
 - Cadastro de usuários
 - Catálogo de produtos
@@ -66,19 +134,19 @@ Ele apresenta uma visão geral de como as classes estão organizadas e interagem
 - Controle de pedidos e status
 - Área administrativa
 
-## Instalação <a name = "instalacao"></a>
+## Instalação <a name="instalacao"></a>
 
 Fique ligado, em breve detalharemos as instruções para instalação e configuração do sistema.
 
-## Uso <a name = "uso"></a>
+## Uso <a name="uso"></a>
 
 Após a instalação, você pode acessar o sistema através do seu navegador de internet favorito. Basta digitar a URL do seu sistema e começar a navegar pelo catálogo de produtos!
 
-## Licença <a name = "licenca"></a>
+## Licença <a name="licenca"></a>
 
 Este projeto está sob a licença do MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-## Contato <a name = "contato"></a>
+## Contato <a name="contato"></a>
 
 Charles: solucao.erp@gmail.com
 
