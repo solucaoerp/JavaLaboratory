@@ -119,6 +119,45 @@ Usamos a anotação **`@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 
 Isso é especialmente útil para aplicações que precisam lidar com usuários, transações ou eventos ocorrendo em diferentes fusos horários. Ao armazenar datas e horas em UTC, podemos facilmente converter para qualquer fuso horário local quando necessário, sem ter que se preocupar com inconsistências devido à armazenagem de datas/horas em diferentes fusos horários."
 
+### Classe Payment
+
+As classes `Order` e `Payment` representam uma relação um-para-um no modelo de domínio, e esta relação será mapeada no banco de dados através do JPA.
+
+A relação entre essas classes é simples: cada `Order` (Pedido) pode ter zero "0" ou um `Payment` (Pagamento) associado, e cada `Payment` está associado a um `Order` específico.
+
+Para entender melhor, vejamos cada classe e suas anotações em detalhes:
+
+```java
+public class Order {
+...
+@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+private Payment payment;
+...
+```
+
+Na classe `Order`, a propriedade `Payment` é anotada com `@OneToOne`, que indica uma relação um-para-um com a entidade `Payment`. Isso significa que cada `Order` pode ter zero "0" ou apenas um `Payment` associado.
+
+Além disso, `mappedBy = "order"` indica que o `Payment` é o proprietário da relação. Isso significa que a chave estrangeira da relação será armazenada na tabela `Payment` no banco de dados.
+
+`cascade = CascadeType.ALL` é uma opção de configuração que define como as operações de persistência em cascata são propagadas. Por exemplo, quando um `Order` é salvo, seu `Payment` correspondente também será salvo.
+
+```java
+public class Payment {
+...
+@OneToOne
+@MapsId
+private Order order;
+...
+```
+
+Na classe `Payment`, a propriedade `Order` também é anotada com `@OneToOne`, reafirmando a relação um-para-um.
+
+`@MapsId` é uma anotação importante aqui. Significa que queremos mapear o ID do `Payment` para ser o mesmo que o ID do `Order`. Isso é útil, por exemplo, para evitar a necessidade de gerar uma chave primária adicional para a tabela `Payment`. Com essa anotação, a tabela `Payment` usará a mesma chave primária da tabela `Order`.
+
+Em resumo, cada `Order` pode ter zero ou um `Payment` e vice-versa, e a chave estrangeira dessa relação está armazenada na tabela `Payment`. Além disso, `Payment` usa o mesmo ID que `Order`, tornando a relação mais eficiente em termos de armazenamento.
+
+Essa abordagem para mapear relações entre entidades é bastante comum em aplicações de banco de dados relacional e facilita a modelagem e a manipulação de relações complexas entre entidades.
+
 
 ## Tecnologias <a name="tecnologias"></a>
 
