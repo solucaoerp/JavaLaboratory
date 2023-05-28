@@ -61,7 +61,7 @@ Um aspecto importante de qualquer aplicação que interage com um banco de dados
 
 No código, usamos as anotações `@ManyToOne` e `@OneToMany` do Spring Data JPA para gerenciar essas relações. Veja como elas são usadas nas classes `Order` e `User`:
 
-### Classe Order
+### Classe Order com User: *:1 (Muitos-para-Um)
 
 ```java
 public class Order {
@@ -78,7 +78,7 @@ public class Order {
 
 Na classe `Order`, utilizamos a anotação `@ManyToOne` para indicar que muitos pedidos podem pertencer a um único usuário. O `@JoinColumn` é usado para definir a coluna que fará a ligação entre as tabelas `Order` e `User` no banco de dados.
 
-### Classe User
+### Classe User com Order: 1:* (Um-para-Muitos)
 
 ```java
 public class User {
@@ -119,7 +119,7 @@ Usamos a anotação **`@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 
 Isso é especialmente útil para aplicações que precisam lidar com usuários, transações ou eventos ocorrendo em diferentes fusos horários. Ao armazenar datas e horas em UTC, podemos facilmente converter para qualquer fuso horário local quando necessário, sem ter que se preocupar com inconsistências devido à armazenagem de datas/horas em diferentes fusos horários."
 
-### Classe Payment
+### Classe Order com Payment: 1:1 '0..1' (Um-para-Um)
 
 As classes `Order` e `Payment` representam uma relação um-para-um no modelo de domínio, e esta relação será mapeada no banco de dados através do JPA.
 
@@ -141,6 +141,10 @@ Além disso, `mappedBy = "order"` indica que o `Payment` é o proprietário da r
 
 `cascade = CascadeType.ALL` é uma opção de configuração que define como as operações de persistência em cascata são propagadas. Por exemplo, quando um `Order` é salvo, seu `Payment` correspondente também será salvo.
 
+### Classe Payment com Order: 1:1 (Um-para-Um)
+
+Na classe `Payment`, a propriedade `Order` também é anotada com `@OneToOne`, reafirmando a relação um-para-um.
+
 ```java
 public class Payment {
 ...
@@ -149,8 +153,6 @@ public class Payment {
 private Order order;
 ...
 ```
-
-Na classe `Payment`, a propriedade `Order` também é anotada com `@OneToOne`, reafirmando a relação um-para-um.
 
 `@MapsId` é uma anotação importante aqui. Significa que queremos mapear o ID do `Payment` para ser o mesmo que o ID do `Order`. Isso é útil, por exemplo, para evitar a necessidade de gerar uma chave primária adicional para a tabela `Payment`. Com essa anotação, a tabela `Payment` usará a mesma chave primária da tabela `Order`.
 
