@@ -379,7 +379,7 @@ Em resumo, o design dessas classes reflete um modelo comum em bases de dados rel
 - [Spring Boot v3.1.0](https://spring.io/projects/spring-boot)
 - [H2 Database v2.1.214](https://www.h2database.com/)
 
-## Recursos <a name="resources"></a>
+## Recursos em Desenvolvimento <a name="resources"></a>
 
 - Cadastro de usuários
 - Catálogo de produtos
@@ -389,21 +389,53 @@ Em resumo, o design dessas classes reflete um modelo comum em bases de dados rel
 
 ## Instalação <a name="install"></a>
 
-Fique ligado, em breve detalharemos as instruções para instalação e configuração do sistema.
+Para instalar o projeto DSCommerce, siga as etapas abaixo:
+
+1. Prepare o ambiente:
+   - Certifique-se de ter o Java instalado em sua máquina. Você pode baixar o Java em [java.com](https://www.java.com/).
+   - Verifique se você tem o Spring Boot v3.1.0 e o H2 Database v2.1.214 instalados. Caso contrário, você pode encontrá-los nos links mencionados anteriormente.
+
+2. Faça o download do repositório:
+   - Acesse o [repositório do DSCommerce](https://github.com/solucaoerp/JavaLaboratory/tree/main/prototypes/intermediate/dscommerce) no GitHub.
+   - Clique no botão "Code" e selecione a opção de download em ZIP.
+   - Extraia o arquivo ZIP em um local de sua escolha.
+
+3. Configure o ambiente:
+   - Abra o projeto DSCommerce em sua IDE favorita.
+   - Certifique-se de configurar corretamente o perfil de ambiente para "test" no arquivo `application-test.properties`.
+   - Verifique as configurações do banco de dados H2 e ajuste-as, se necessário, no arquivo de configuração.
+
+4. Execute o projeto:
+   - Inicie a execução do projeto DSCommerce com o perfil de ambiente "test".
+   - Verifique se o aplicativo está sendo executado corretamente sem erros.
 
 ## Uso <a name="use"></a>
 
-Após a instalação, você pode acessar o sistema através do seu navegador de internet favorito. Basta digitar a URL do seu sistema e começar a navegar pelo catálogo de produtos!
+Após a instalação e execução do projeto DSCommerce, você pode seguir os passos abaixo para utilizá-lo:
+
+1. Acesse o sistema:
+   - Abra seu navegador de internet favorito.
+   - Digite a URL do DSCommerce (dependendo da configuração local da execução do projeto).
+   - Navegue pelo catálogo de produtos e utilize as funcionalidades do sistema.
+
+2. Acesse o Banco de Dados H2:
+   - Para acessar o banco de dados embutido H2, abra seu navegador de internet.
+   - Digite a URL: `http://localhost:8080/h2-console`.
+   - Insira as informações de login fornecidas no arquivo de configuração do perfil "test".
+   - Explore as tabelas e dados do banco de dados H2 relacionados ao DSCommerce.
+
+![H2 Database Login](https://github.com/solucaoerp/JavaLaboratory/blob/main/prototypes/intermediate/dscommerce/assets/image/login-h2-database.png)
 
 ## Licença <a name="license"></a>
 
-Este projeto está sob a licença do MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este projeto está licenciado sob os termos da [Licença MIT](https://opensource.org/licenses/MIT). A Licença MIT é uma licença de software livre e de código aberto que permite o uso, a cópia, a modificação e a distribuição do código-fonte. Esta licença é notória por sua simplicidade e flexibilidade, incentivando a colaboração e a inovação no software de código aberto.
 
 ## Contato <a name="contact"></a>
 
-Charles: solucao.erp@gmail.com
+Se você tiver alguma dúvida ou precisar de suporte relacionado ao projeto DSCommerce, entre em contato com Charles através do e-mail: solucao.erp@gmail.com.
 
-Link do Projeto: [DSCommerce](https://github.com/solucaoerp/JavaLaboratory/tree/main/prototypes/intermediate/dscommerce)
+Link do Projeto (Project Link):
+Acesse o [repositório do DSCommerce](https://github.com/solucaoerp/JavaLaboratory/tree/main/prototypes/intermediate/dscommerce) no GitHub para obter mais informações e acessar o código-fonte do projeto.
 
 ---
 
