@@ -5,25 +5,37 @@
   <img src="https://github.com/solucaoerp/JavaLaboratory/blob/main/prototypes/intermediate/dscommerce/assets/image/icon48_h2database.png" alt="H2Database">
 </div>
 
-
 DSCommerce é um sistema de comércio eletrônico desenvolvido em Java utilizando o framework `Spring Boot (v3.1.0)` com banco de dados `H2 (v2.1.214)`.
-
 
 ## Índice
 
-- [Índice](#indice)
-- [Visão Geral](#visao-geral)
-- [Diagrama de Classes](#diagrama-de-classes)
-- [Mapeamento de Entidades e Relacionamentos](#mapeamento-entidades)
-- [Tecnologias](#tecnologias)
-- [Recursos](#recursos)
-- [Instalação](#instalacao)
-- [Uso](#uso)
-- [Licença](#licenca)
-- [Contato](#contato)
+- [Visão Geral](#view)
+- [Diagrama de Classes](#diagram)
+- [Mapeamentos e Relacionamentos](#mapping)
+    - [*:1 (muitos-para-um)](#relation-many-to-one)
+	    - [Class Order](#class-order)
+    - [1:* (um-para-muitos)](#relation-one-to-many)
+        - [Class User](#class-user)
+    - [1:1 (um-para-um)](#relation-one-to-one)
+        - [Class Order](#class-order-one-to-one)
+        - [Class Payment](#class-payment-one-to-one)
+    - [M:M (muitos-para-muitos)](#relation-many-to-many)
+        - [Class Category](#class-category-many-to-many)
+        - [Class Product](#class-product-many-to-many)
+	- [M:M (muitos-para-Muitos) com classe de associação e (chave Composta)](#relation-many-to-many-composite-key)
+	    - [1. Class OrderItemPK](#class-orderitempk-many-to-many)
+	    - [2. Class OrderItem](#class-orderitem-many-to-many)
+	    - [3. Class Order](#class-order-many-to-many-compost)
+	    - [4. Class Product](#class-product-many-to-many-compost)
+- [Tecnologias](#technologies)
+- [Recursos](#resources)
+- [Instalação](#install)
+- [Uso](#use)
+- [Licença](#license)
+- [Contato](#contact)
 
 
-## Visão Geral <a name="visao-geral"></a>
+## Visão Geral <a name="view"></a>
 
 DSCommerce é um sistema de comércio eletrônico. Ele é capaz de manter um catálogo de produtos categorizados que os usuários podem navegar, selecionar produtos para visualizar detalhes e adicioná-los a um carrinho de compras.
 
@@ -46,7 +58,7 @@ Os pedidos feitos pelos usuários são salvos no sistema com um status "aguardan
 
 Há duas categorias de usuários: clientes e administradores. Enquanto os clientes podem atualizar seu cadastro, fazer pedidos e visualizar seus pedidos, os administradores têm acesso à área administrativa, onde podem acessar todos os cadastros de usuários, produtos e categorias.
 
-## Diagrama de Classes <a name="diagrama-de-classes"></a>
+## Diagrama de Classes <a name="diagram"></a>
 
 O diagrama de classes a seguir representa a estrutura do DSCommerce:
 
@@ -55,13 +67,15 @@ O diagrama de classes a seguir representa a estrutura do DSCommerce:
 Ele apresenta uma visão geral de como as classes estão organizadas e interagem entre si. Isso facilita a compreensão da estrutura do código.
 
 
-## Mapeamento de Entidades e Relacionamentos <a name="mapeamento-entidades"></a>
+## Mapeamento de Entidades e Relacionamentos <a name="mapping"></a>
 
 Um aspecto importante de qualquer aplicação que interage com um banco de dados é como ela mapeia e gerencia as relações entre suas entidades. No DSCommerce, as entidades `User` e `Order` possuem uma relação bidirecional: um usuário pode ter muitos pedidos e um pedido pertence a um único usuário.
 
 No código, usamos as anotações `@ManyToOne` e `@OneToMany` do Spring Data JPA para gerenciar essas relações. Veja como elas são usadas nas classes `Order` e `User`:
 
-### Classe Order com User: *:1 (Muitos-para-Um)
+### Muitos-para-Um [ *:1 ] <a name="relation-many-to-one"></a>
+
+#### Class Order <a name="class-order"></a>
 
 ```java
 public class Order {
@@ -78,7 +92,9 @@ public class Order {
 
 Na classe `Order`, utilizamos a anotação `@ManyToOne` para indicar que muitos pedidos podem pertencer a um único usuário. O `@JoinColumn` é usado para definir a coluna que fará a ligação entre as tabelas `Order` e `User` no banco de dados.
 
-### Classe User com Order: 1:* (Um-para-Muitos)
+### 1:* (um-para-muitos) <a name="relation-one-to-many"></a>
+
+#### Class User <a name="class-user"></a>
 
 ```java
 public class User {
@@ -133,13 +149,15 @@ Se tentarmos inserir um usuário com um endereço de e-mail que já está presen
 Vale a pena notar que as restrições de unicidade são uma forma de regra de validação de negócios e é melhor aplicá-las no nível do banco de dados para garantir a integridade dos dados.
 
 
-### Classe Order com Payment: 1:1 '0..1' (Um-para-Um)
+### Um-para-Um [ 1:1 -> '0..1' ] <a name="relation-one-to-one"></a>
 
 As classes `Order` e `Payment` representam uma relação um-para-um no modelo de domínio, e esta relação será mapeada no banco de dados através do JPA.
 
 A relação entre essas classes é simples: cada `Order` (Pedido) pode ter zero "0" ou um `Payment` (Pagamento) associado, e cada `Payment` está associado a um `Order` específico.
 
 Para entender melhor, vejamos cada classe e suas anotações em detalhes:
+
+#### Class Order <a name="class-order-one-to-one"></a>
 
 ```java
 public class Order {
@@ -155,7 +173,7 @@ Além disso, `mappedBy = "order"` indica que o `Payment` é o proprietário da r
 
 `cascade = CascadeType.ALL` é uma opção de configuração que define como as operações de persistência em cascata são propagadas. Por exemplo, quando um `Order` é salvo, seu `Payment` correspondente também será salvo.
 
-### Classe Payment com Order: 1:1 (Um-para-Um)
+#### Class Payment <a name="class-payment-one-to-one"></a>
 
 Na classe `Payment`, a propriedade `Order` também é anotada com `@OneToOne`, reafirmando a relação um-para-um.
 
@@ -175,11 +193,11 @@ Em resumo, cada `Order` pode ter zero ou um `Payment` e vice-versa, e a chave es
 
 Essa abordagem para mapear relações entre entidades é bastante comum em aplicações de banco de dados relacional e facilita a modelagem e a manipulação de relações complexas entre entidades.
 
-### Classe Product / Category /Product: M:M (Muitos-para-Muitos)
+### Muitos-para-Muitos [ M:M ] <a name="relation-many-to-many"></a>
 
 Em um relacionamento de banco de dados, **muitos-para-muitos (M:M)** ocorre quando muitas instâncias de uma entidade estão associadas a muitas instâncias de outra entidade. No modelo proposto, um produto pode pertencer a várias categorias e uma categoria pode está associada a vários produtos.
 
-**Category**
+#### Class Category <a name="class-category-many-to-many"></a>
 
 ```java
 @Entity
@@ -196,7 +214,7 @@ public class Category {
 }
 ```
 
-**Product**
+#### Class Product <a name="class-product-many-to-many"></a>
 
 ```java
 @Entity
@@ -256,13 +274,112 @@ No exemplo proposto, `@Column(columnDefinition = "TEXT")` está definindo como a
 
 Quando o Hibernate (ou outro provedor JPA) cria as tabelas do banco de dados, ele usará o valor de `columnDefinition` para criar a coluna `description`. Nesse caso específico, a coluna `description` será criada como uma coluna `TEXT`. O tipo `TEXT` é um tipo de dado de string SQL que pode armazenar grandes quantidades de texto. O tamanho exato que um `TEXT` pode armazenar varia de um sistema de gerenciamento de banco de dados para outro, mas geralmente é considerado suficiente para armazenar texto de qualquer tamanho razoável.
 
-## Tecnologias <a name="tecnologias"></a>
+
+## Muitos-para-Muitos [ M:M ] com classe de associação e (chave Composta) <a name="relation-many-to-many-composite-key"></a> 
+
+Entendendo o conceito de chave composta e associação muitos-para-muitos (M:M).
+
+A chave composta é uma chave que é composta por mais de um campo para identificar de forma única um registro em uma tabela. No contexto do JPA e Hibernate, as chaves compostas podem ser representadas através de uma classe auxiliar com a anotação `@Embeddable`, que no modelo será representado pela classe **`OrderItemPK`**.
+
+Por outro lado, uma associação M:M ocorre quando múltiplos registros em uma tabela estão associados a múltiplos registros em outra tabela. Para efetuar essa associação, geralmente **é usada uma tabela de associação** que contém chaves estrangeiras para as tabelas que estão sendo associadas. Essa tabela de associação é justamente a representada pela entidade **`OrderItem`**.
+
+1. Classe **`OrderItemPK`**: Esta é uma classe auxiliar que representa a chave primária composta da tabela **`tb_order_item`**. Ela possui dois atributos, **`order`** e **`product`**, que são as chaves estrangeiras para as tabelas **`Order`** e **`Product`** respectivamente. A anotação **`@ManyToOne`** indica que para um **`OrderItemPK`** há muitos pedidos (**Order**) e muitos produtos (**Product**).
+
+2. Classe `OrderItem`: Esta é a entidade que representa a tabela de associação `tb_order_item`. A chave primária dessa entidade é do tipo `OrderItemPK` e é marcada com a anotação `@EmbeddedId`. Isso significa que a chave primária dessa entidade é um tipo incorporado, ou seja, é composta pelos campos definidos na classe `OrderItemPK`. 
+
+3. Classe `Order`: Esta classe representa a entidade `Order` no banco de dados. O campo `items` representa a associação de um pedido com muitos itens de pedido. O mapeamento `@OneToMany(mappedBy = "id.order")` indica que a propriedade `order` dentro da chave primária incorporada `id` na entidade `OrderItem` é a que mapeia de volta para o pedido.
+
+4. Classe `Product`: Similarmente, a classe `Product` representa a entidade `Product` no banco de dados. O campo `items` representa a associação de um produto com muitos itens de pedido. O mapeamento `@OneToMany(mappedBy = "id.product")` indica que a propriedade `product` dentro da chave primária incorporada `id` na entidade `OrderItem` é a que mapeia de volta para o produto.
+
+Este design de tabela de associação com chave primária composta é muito comum em bases de dados relacionais quando se deseja representar relações muitos-para-muitos, pois ele permite representar a relação M:M e, além disso, armazenar dados adicionais sobre a relação, como é o caso da quantidade e preço no item do pedido.
+
+Em resumo, a relação entre `Order`, `Product` e `OrderItem` é uma **relação muitos-para-muitos com classe de associação**, onde a chave de **`OrderItem`** é composta e montada na classe **`OrderItemPK`**, que vem das classes **`Product`** e **`Order`**.
+
+#### 1. Class OrderItemPK <a name="class-orderitempk-many-to-many"></a>
+
+```java
+@Embeddable
+public class OrderItemPK {
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    // Getters e Setters
+}
+```
+
+Nesta classe, **`@Embeddable`** indica que esta é uma classe auxiliar que será usada para compor outra entidade. A classe contém duas associações `@ManyToOne` para `Order` e `Product`, respectivamente, formando uma chave composta. Estes dois campos serão usados como uma chave primária composta na tabela de associação **`tb_order_item`**.
+
+#### 2. Class OrderItem <a name="class-orderitem-many-to-many"></a>
+
+```java
+@Entity
+@Table(name = "tb_order_item")
+public class OrderItem {
+
+    @EmbeddedId
+    private OrderItemPK id = new OrderItemPK();
+
+    private Integer quantity;
+    private Double price;
+
+    // Constructors, Getters e Setters
+}
+```
+
+Aqui, **`OrderItem`** é a entidade que **representa a tabela de associação `tb_order_item`**. **`@EmbeddedId`** é usado para indicar que a chave primária dessa entidade é do tipo `OrderItemPK`, uma classe auxiliar incorporada.
+
+#### 3. Class Order <a name="class-order-many-to-many-compost"></a>
+
+```java
+@Entity
+@Table(name = "tb_order")
+public class Order {
+
+    // Outros campos...
+
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> items = new HashSet<>();
+
+    // Constructors, Getters e Setters
+}
+```
+
+Em `Order`, a anotação `@OneToMany(mappedBy = "id.order")` estabelece uma relação de um-para-muitos com `OrderItem`, indicando que um pedido (`Order`) pode ter vários itens de pedido (`OrderItem`). A propriedade `mappedBy` significa que a propriedade `order` dentro da chave primária incorporada `id` na entidade `OrderItem` é a que mapeia de volta para o pedido (`Order`).
+
+#### 4. Class Product <a name="class-product-many-to-many-compost"></a>
+
+```java
+@Entity
+@Table(name = "tb_product")
+public class Product {
+
+    // Outros campos...
+
+    @OneToMany(mappedBy = "id.product")
+    private Set<OrderItem> items = new HashSet<>();
+
+    // Getters e Setters
+}
+```
+
+Em `Product`, a anotação `@OneToMany(mappedBy = "id.product")` estabelece uma relação de um-para-muitos com `OrderItem`, indicando que um produto (`Product`) pode estar em vários itens de pedido (`OrderItem`). A propriedade `mappedBy` significa que a propriedade `product` dentro da chave primária incorporada `id` na entidade `OrderItem` é a que mapeia de volta para o produto (`Product`).
+
+Em resumo, o design dessas classes reflete um modelo comum em bases de dados relacionais para representar relações muitos-para-muitos, com uma tabela de associação (`OrderItem`) possuindo uma chave composta (`OrderItemPK`), composta pelas chaves de duas outras tabelas (`Order` e `Product`). Isso permite não apenas a relação muitos-para-muitos entre pedidos e produtos, mas também a possibilidade de associar dados adicionais a cada par pedido-produto, como quantidade e preço.
+
+
+## Tecnologias <a name="technologies"></a>
 
 - [Java](https://www.oracle.com/br/java/)
 - [Spring Boot v3.1.0](https://spring.io/projects/spring-boot)
 - [H2 Database v2.1.214](https://www.h2database.com/)
 
-## Recursos <a name="recursos"></a>
+## Recursos <a name="resources"></a>
 
 - Cadastro de usuários
 - Catálogo de produtos
@@ -270,19 +387,19 @@ Quando o Hibernate (ou outro provedor JPA) cria as tabelas do banco de dados, el
 - Controle de pedidos e status
 - Área administrativa
 
-## Instalação <a name="instalacao"></a>
+## Instalação <a name="install"></a>
 
 Fique ligado, em breve detalharemos as instruções para instalação e configuração do sistema.
 
-## Uso <a name="uso"></a>
+## Uso <a name="use"></a>
 
 Após a instalação, você pode acessar o sistema através do seu navegador de internet favorito. Basta digitar a URL do seu sistema e começar a navegar pelo catálogo de produtos!
 
-## Licença <a name="licenca"></a>
+## Licença <a name="license"></a>
 
 Este projeto está sob a licença do MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-## Contato <a name="contato"></a>
+## Contato <a name="contact"></a>
 
 Charles: solucao.erp@gmail.com
 
