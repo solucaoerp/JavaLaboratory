@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/lists")
 public class GameListController {
+
     @Autowired
     private GameListService gameListService;
 
@@ -32,6 +33,4 @@ public class GameListController {
         List<GameDTO> result = gameService.findByList(listId);
         return result;
     }
-
-
 }

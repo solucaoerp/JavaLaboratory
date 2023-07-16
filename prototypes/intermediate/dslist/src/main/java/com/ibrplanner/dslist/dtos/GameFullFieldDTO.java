@@ -15,8 +15,7 @@ public class GameFullFieldDTO {
     private String shortDescription;
     private String longDescription;
 
-    public GameFullFieldDTO() {
-    }
+    public GameFullFieldDTO() {}
 
     public GameFullFieldDTO(Game entity) {
         BeanUtils.copyProperties(entity, this);

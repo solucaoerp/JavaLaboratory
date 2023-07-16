@@ -4,6 +4,7 @@ import com.ibrplanner.dslist.entities.Game;
 import com.ibrplanner.dslist.projections.GameMinProjection;
 
 public class GameDTO {
+
     private Long id;
     private String title;
     private Integer year;

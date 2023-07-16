@@ -13,6 +13,7 @@ import java.util.List;
 
 @Service
 public class GameService {
+
     @Autowired
     private GameRepository gameRepository;
 
@@ -31,6 +32,7 @@ public class GameService {
         List<GameDTO> dto = result.stream().map(x -> new GameDTO(x)).toList();
         return dto;
     }
+
     @Transactional(readOnly = true)
     public List<GameDTO> findByList(Long listId) {
         List<GameMinProjection> result = gameRepository.searchByList(listId);
